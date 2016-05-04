@@ -10,7 +10,7 @@ function load_data {
     # Use quickstep to generate the catalog file in a new folder.
     $QS -printing_enabled=false -storage_path=$QS_STORAGE -initialize_db=true < create.sql
 
-    QSEXE="$QS $QS_ARGS_BASE $QS_ARGS_STORAGE$QS_STORAGE"
+    QSEXE="$QS $QS_ARGS_BASE $QS_ARGS_STORAGE"
     COUNTER=0
     for tblfile in $SSB_DATA_PATH/*.tbl* ; do
       # Resolve which table the file should be loaded into.
