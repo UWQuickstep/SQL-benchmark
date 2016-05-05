@@ -1,16 +1,19 @@
 # Load user-defined environment variables
-source quickstep.cfg
+
+echo "Loading settings from $1"
+if ! source $1 ; then echo "Failed to load config" ; exit 1 ; fi
+
 QS_ARGS_STORAGE="-storage_path="$QS_STORAGE
 
 function load_data {
   # Creates a fresh load of the ssb data.
   if [ -d $SSB_DATA_PATH ] ; then
     rm -rf $QS_STORAGE
-
+    QSEXE="$QS $QS_ARGS_BASE $QS_ARGS_STORAGE $QS_ARGS_NUMA_LOAD"
+    
     # Use quickstep to generate the catalog file in a new folder.
-    $QS -printing_enabled=false -storage_path=$QS_STORAGE -initialize_db=true < create.sql
+    $QSEXE -initialize_db=true < create.sql
 
-    QSEXE="$QS $QS_ARGS_BASE $QS_ARGS_STORAGE"
     COUNTER=0
     for tblfile in $SSB_DATA_PATH/*.tbl* ; do
       # Resolve which table the file should be loaded into.
@@ -50,14 +53,14 @@ function load_data {
 function run_queries {
   # Runs each SSB query several times.
 
-  QSEXE="$QS $QS_ARGS_BASE $QS_ARGS_NUMA $QS_ARGS_STORAGE"
+  QSEXE="$QS $QS_ARGS_BASE $QS_ARGS_NUMA_RUN $QS_ARGS_STORAGE"
   queries=( 01 02 03 04 05 06 07 08 09 10 11 12 13 )
   for query in ${queries[@]} ; do
     echo "Query $query.sql"
     rm tmp.sql &>/dev/null
     touch tmp.sql
     # run each query 3 times.
-    for i in `seq 1 3`;
+    for i in `seq 1 5`;
     do
       cat $query.sql >> tmp.sql 
     done    
@@ -67,6 +70,7 @@ function run_queries {
       exit 1
     fi
   done
+  rm tmp.sql &>/dev/null
 }
 
 if [ ! -x $QS ] ; then

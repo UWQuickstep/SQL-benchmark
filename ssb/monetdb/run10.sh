@@ -16,3 +16,5 @@ for query in ${queries[@]} ; do
     exit 1
   fi
 done
+
+rm tmp.sql &>/dev/null
