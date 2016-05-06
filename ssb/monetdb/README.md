@@ -6,7 +6,7 @@ First, set up the `monetdb.cfg` file using the ssb data locations for your syste
 To create, load, and run you will use the following commands:
 ```bash
 
-# Note: create.sh will attempt to delete an existing instance of the ssb database to ensure a clean run. This step may not be necessary.
+# Note: create.sh will attempt to delete an existing instance of the ssb database to ensure a clean run. This step may not be necessary, especially if you are on the quickstep box.
 ./create10.sh
 
 # Loads ssb data into tables.
