@@ -4,7 +4,7 @@
 import sys
 import re
 
-patt = re.compile(ur'Query (\d+)\.sql|time: (\d+\.\d+) seconds')
+patt = re.compile(ur'Query (\d+)\.sql|Time: (\d+\.\d+) ms')
 
 def avg(arr):
   sum = 0.0

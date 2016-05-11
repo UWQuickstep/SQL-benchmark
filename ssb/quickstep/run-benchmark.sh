@@ -3,6 +3,9 @@
 echo "Loading settings from $1"
 if ! source $1 ; then echo "Failed to load config" ; exit 1 ; fi
 
+# Print some debug information about this test.
+cat $1
+
 QS_ARGS_STORAGE="-storage_path="$QS_STORAGE
 
 function load_data {
@@ -12,7 +15,7 @@ function load_data {
     QSEXE="$QS $QS_ARGS_BASE $QS_ARGS_STORAGE $QS_ARGS_NUMA_LOAD"
     
     # Use quickstep to generate the catalog file in a new folder.
-    $QSEXE -initialize_db=true < create.sql
+    $QSEXE -initialize_db=true < $CREATE_SQL
 
     COUNTER=0
     for tblfile in $SSB_DATA_PATH/*.tbl* ; do
@@ -52,7 +55,6 @@ function load_data {
 
 function run_queries {
   # Runs each SSB query several times.
-
   QSEXE="$QS $QS_ARGS_BASE $QS_ARGS_NUMA_RUN $QS_ARGS_STORAGE"
   queries=( 01 02 03 04 05 06 07 08 09 10 11 12 13 )
   for query in ${queries[@]} ; do

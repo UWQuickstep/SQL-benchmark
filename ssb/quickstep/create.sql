@@ -1,6 +1,5 @@
--- The chosen blocksizes reflect the size of the underlying SF100 table.
-
-drop table lineorder;
+-- The blocksizes and storage types were chosen because they were experimentally
+-- determined to be the fastest on the Quickstep CHTC machine.
 
 create table lineorder (
 lo_orderkey int not null,
@@ -23,19 +22,8 @@ lo_shipmode char(10) not null
 ) WITH BLOCKPROPERTIES (
   TYPE compressed_columnstore,
   SORT lo_orderkey,
-  COMPRESS (lo_linenumber,
-            lo_suppkey,
-            lo_orderpriority,
-            lo_quantity,
-            lo_discount,
-            lo_tax,
-            lo_shipmode),
-  BLOCKSIZEMB 4);
-
-create index bw_lo_dis on lineorder (lo_discount) using bitweaving (type h);
-create index bw_lo_qua on lineorder (lo_quantity) using bitweaving (type h);
-
-
+  COMPRESS ALL,
+  BLOCKSIZEMB 32);
 
 create table part (
 p_partkey int not null,
@@ -97,3 +85,4 @@ d_weekdayfl int not null
 ) WITH BLOCKPROPERTIES (
   TYPE split_rowstore,
   BLOCKSIZEMB 2);
+
