@@ -3,14 +3,14 @@
 
 ## Flame Graphs
 
-For a good description of what flame graphs are, read (this article)[http://queue.acm.org/detail.cfm?id=2927301].
+For a good description of what flame graphs are, read [this article](http://queue.acm.org/detail.cfm?id=2927301).
 
 To summarize:
 > A flame graph visualizes a collection of stack traces (aka call stacks), shown as an adjacency diagram with an inverted icicle layout. Flame graphs are commonly used to visualize CPU profiler output, where stack traces are collected using sampling.
 
 ### Usage
 
-You'll need a clone of the (FlameGraph repo)[https://github.com/brendangregg/FlameGraph]. 
+You'll need a clone of the [FlameGraph repo](https://github.com/brendangregg/FlameGraph). 
 
 1  In your quickstep root folder, create a new build directory, `build-profile` or similar.
 2  You'll need to modify your `CMakeLists.txt` file. Simply append the `CMakeLists.txt.perf` file to quickstep's `CMakeLists.txt` file. Something like `cat CMakeLists.txt.perf >> ../CMakeLists.txt`
