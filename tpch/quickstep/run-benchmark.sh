@@ -74,11 +74,16 @@ function run_queries {
     for i in `seq 1 5`;
     do
       cat $query.sql >> tmp.sql 
-    done    
-    if ! $QSEXE < tmp.sql ;
+    done
+    # Run quickstep with with a timeout of 15 minutes. This is because no set of
+    # queries should run over 15 minutes.    
+    timeout 15m $QSEXE < tmp.sql
+    if [ $? = 124 ] ;
     then
-      echo "Quickstep failed on query $query, exiting."
-      exit 1
+      echo "Quickstep timed out on query $query, continueing to next query."
+    elif [ $? != 0  ] ;
+    then
+      echo "Quickstep failed on query $query, continueing to next query."
     fi
   done
   rm tmp.sql &>/dev/null
