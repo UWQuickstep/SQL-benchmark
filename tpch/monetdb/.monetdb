@@ -1,0 +1,4 @@
+# Configuration for monet, runs on start of mclient when mclient is run in this directory.
+
+user=monetdb
+password=monetdb
