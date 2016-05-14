@@ -20,4 +20,6 @@ where
 	and o_orderdate < date '1994-01-01' + interval '1' year
 group by
 	n_name
+order by
+	revenue desc
 ;
