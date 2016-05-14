@@ -16,4 +16,7 @@ where
 group by
 	l_returnflag,
 	l_linestatus
+order by
+	l_returnflag,
+	l_linestatus
 ;
