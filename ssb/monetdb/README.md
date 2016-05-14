@@ -1,5 +1,8 @@
 # SSB on MonetDB
 
+## Installation
+To install on a Debian (trusty) box, follow the instructions at: https://www.monetdb.org/downloads/deb/
+
 ## Usage
 First, set up the `monetdb.cfg` file using the ssb data locations for your system.
 
@@ -7,13 +10,13 @@ To create, load, and run you will use the following commands:
 ```bash
 
 # Note: create.sh will attempt to delete an existing instance of the ssb database to ensure a clean run. This step may not be necessary, especially if you are on the quickstep box.
-./create10.sh
+./create100.sh
 
 # Loads ssb data into tables.
-./load10.sh
+./load100.sh
 
 # Runs each ssb query 5 times, prints runtime.
-./run10.sh
+./run100.sh
 ```
 
 ## General Useful commands which set up Monet.
