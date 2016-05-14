@@ -15,7 +15,7 @@ having
 	sum(ps_supplycost * ps_availqty) >
 	(
 		select
-			sum(ps_supplycost * ps_availqty) * 0.0000100000000
+			sum(ps_supplycost * ps_availqty) * 0.00000100000000
 			-- The above constant needs to be adjusted according
 			-- to the scale factor (SF): constant = 0.0001 / SF.
 		from
