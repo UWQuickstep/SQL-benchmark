@@ -37,7 +37,8 @@ def process_file(fname):
   
   for k in query_avg:
     #print "{},{}".format(k, query_avg[k])
-    print "{}".format(query_avg[k]/1000.0) # ms to sec
+    #print "{}".format(query_avg[k]/1000.0) # ms to sec
+    print "{}".format(query_avg[k])
 
 
   
