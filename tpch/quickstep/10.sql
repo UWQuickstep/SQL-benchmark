@@ -26,6 +26,7 @@ group by
 	c_phone,
 	n_name,
 	c_address,
+	c_comment
 order by
 	revenue desc
 limit 20
