@@ -38,7 +38,7 @@ CREATE TABLE customer (
   c_comment CHAR(117) NOT NULL
 ) WITH BLOCKPROPERTIES (
   TYPE split_rowstore,
-  BLOCKSIZEMB 32);
+  BLOCKSIZEMB 32
 ) ;
 
 CREATE TABLE part (
@@ -53,7 +53,8 @@ CREATE TABLE part (
   p_comment CHAR(23) NOT NULL
 ) WITH BLOCKPROPERTIES (
   TYPE split_rowstore,
-  BLOCKSIZEMB 32);
+  BLOCKSIZEMB 32
+);
 
 CREATE TABLE partsupp (
   ps_partkey INT NOT NULL,
