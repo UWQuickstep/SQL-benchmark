@@ -36,6 +36,9 @@ CREATE TABLE customer (
   c_acctbal DECIMAL NOT NULL,
   c_mktsegment CHAR(10) NOT NULL,
   c_comment CHAR(117) NOT NULL
+) WITH BLOCKPROPERTIES (
+  TYPE split_rowstore,
+  BLOCKSIZEMB 32);
 ) ;
 
 CREATE TABLE part (
@@ -59,8 +62,13 @@ CREATE TABLE partsupp (
   ps_supplycost DECIMAL NOT NULL,
   ps_comment CHAR(199) NOT NULL
 ) WITH BLOCKPROPERTIES (
-  TYPE split_rowstore,
+  TYPE compressed_columnstore,
+  SORT ps_partkey,
+  COMPRESS ALL,
   BLOCKSIZEMB 32);
+--) WITH BLOCKPROPERTIES (
+--  TYPE split_rowstore,
+--  BLOCKSIZEMB 32);
 
 CREATE TABLE orders (
   o_orderkey INT NOT NULL,
@@ -73,8 +81,13 @@ CREATE TABLE orders (
   o_shippriority INT NOT NULL,
   o_comment CHAR(79) NOT NULL
 ) WITH BLOCKPROPERTIES (
-  TYPE split_rowstore,
+  TYPE compressed_columnstore,
+  SORT o_orderkey,
+  COMPRESS ALL,
   BLOCKSIZEMB 32);
+--) WITH BLOCKPROPERTIES (
+--  TYPE split_rowstore,
+--  BLOCKSIZEMB 32);
 
 CREATE TABLE lineitem (
   l_orderkey INT NOT NULL,

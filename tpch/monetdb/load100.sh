@@ -32,7 +32,7 @@ for tblfile in $TPCH100_PATH/*.tbl* ; do
     TBL="lineitem"
   fi
 
-  if ! mclient -d tpch100 <<< "COPY INTO $TBL FROM '$tblfile' DELIMITERS '|','\n';";
+  if ! mclient -d tpch100 --interactive=ms <<< "COPY INTO $TBL FROM '$tblfile' DELIMITERS '|','\n';";
   then
     echo "MonetDB load failed on $tblfile in table $TBL, continuing"; 
   fi
