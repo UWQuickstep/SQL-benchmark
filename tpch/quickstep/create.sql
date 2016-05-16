@@ -4,7 +4,7 @@ CREATE TABLE region (
   r_comment CHAR(152) NOT NULL
 ) WITH BLOCKPROPERTIES (
   TYPE split_rowstore,
-  BLOCKSIZEMB 32);
+  BLOCKSIZEMB 4);
 
 CREATE TABLE nation (
   n_nationkey INT NOT NULL,
@@ -13,7 +13,7 @@ CREATE TABLE nation (
   n_comment CHAR(152) NOT NULL
 ) WITH BLOCKPROPERTIES (
   TYPE split_rowstore,
-  BLOCKSIZEMB 32);
+  BLOCKSIZEMB 4);
 
 CREATE TABLE supplier (
   s_suppkey INT NOT NULL,
@@ -25,7 +25,7 @@ CREATE TABLE supplier (
   s_comment CHAR(101) NOT NULL
 ) WITH BLOCKPROPERTIES (
   TYPE split_rowstore,
-  BLOCKSIZEMB 32);
+  BLOCKSIZEMB 4);
 
 CREATE TABLE customer (
   c_custkey INT NOT NULL,
@@ -38,7 +38,7 @@ CREATE TABLE customer (
   c_comment CHAR(117) NOT NULL
 ) WITH BLOCKPROPERTIES (
   TYPE split_rowstore,
-  BLOCKSIZEMB 32
+  BLOCKSIZEMB 4
 ) ;
 
 CREATE TABLE part (
@@ -53,7 +53,7 @@ CREATE TABLE part (
   p_comment CHAR(23) NOT NULL
 ) WITH BLOCKPROPERTIES (
   TYPE split_rowstore,
-  BLOCKSIZEMB 32
+  BLOCKSIZEMB 4
 );
 
 CREATE TABLE partsupp (
@@ -66,10 +66,11 @@ CREATE TABLE partsupp (
   TYPE compressed_columnstore,
   SORT ps_partkey,
   COMPRESS ALL,
-  BLOCKSIZEMB 32);
+  BLOCKSIZEMB 4);
 --) WITH BLOCKPROPERTIES (
 --  TYPE split_rowstore,
---  BLOCKSIZEMB 32);
+--  BLOCKSIZEMB 4);
+-- CREATE INDEX partsuppSMA ON partsupp USING SMA;
 
 CREATE TABLE orders (
   o_orderkey INT NOT NULL,
@@ -85,10 +86,11 @@ CREATE TABLE orders (
   TYPE compressed_columnstore,
   SORT o_orderkey,
   COMPRESS ALL,
-  BLOCKSIZEMB 32);
+  BLOCKSIZEMB 4);
 --) WITH BLOCKPROPERTIES (
 --  TYPE split_rowstore,
---  BLOCKSIZEMB 32);
+--  BLOCKSIZEMB 4);
+-- CREATE INDEX ordersSMA ON orders USING SMA;
 
 CREATE TABLE lineitem (
   l_orderkey INT NOT NULL,
@@ -111,4 +113,5 @@ CREATE TABLE lineitem (
   TYPE compressed_columnstore,
   SORT l_orderkey,
   COMPRESS ALL,
-  BLOCKSIZEMB 32);
+  BLOCKSIZEMB 4);
+-- CREATE INDEX sma_index ON lineitem(l_shipdate,l_receiptdate,l_quantity) USING SMA;
