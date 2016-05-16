@@ -2,6 +2,7 @@
 - Scala 2.10.x
 - Spark 1.6.1
 - sbt 1.0
+
 #### Installation:
 - Download and install scala 2.10.5 from http://www.scala-lang.org/download/2.10.5.html. Any 2.10 version should suffice.
 - Download Spark 1.6.1 http://spark.apache.org/downloads.html. (you do not have to build spark)
