@@ -1,7 +1,7 @@
-Requirements:
-Scala 2.10.x
-Spark 1.6.1
-sbt 1.0
+#### Requirements:
+- Scala 2.10.x
+- Spark 1.6.1
+- sbt 1.0
 
 Download and install scala 2.10.5 from http://www.scala-lang.org/download/2.10.5.html. Any 2.10 version should suffice.
 
@@ -12,7 +12,7 @@ Install sbt  from http://www.scala-sbt.org/0.13/docs/Setup.html
 Once that is done copy the logfiles into your spark  configuration directory
 
 eg: if your spark  download is at  /u/r/l/rl/Downloads/spark-1.6.1
-this will be your SPARK_HOME, then the  configuration  directory would be 
+this will be your ** SPARK_HOME **, then the  configuration  directory would be 
 $SPARK_HOME/conf.
 
 now start the spark master using 
@@ -46,6 +46,7 @@ We will be running the scripts using the standard spark submit
 SPARK_HOME/sbin/spark-submit
 
 eg:
+```
 bin/spark-submit \
   --class SSB \
   --master spark://node-2.838.quickstep-pg0.wisc.cloudlab.us:7077 \
@@ -56,8 +57,8 @@ bin/spark-submit \
   --ssb_data  /newDisk1/ssb/data/sf1 \
   --cache true \
   --partitions  100
-
---ssb_data - indicates the path to the raw data files
---cache caches the tables before the queries are run
---partitions  number of reducers
+```
+- --ssb_data - indicates the path to the raw data files
+- --cache caches the tables before the queries are run
+- --partitions  number of reducers
 --total-executor-cores  number of executor threads that can run at a time. Controls the number of tasks that can happen in parallel
