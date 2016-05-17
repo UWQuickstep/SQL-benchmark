@@ -20,10 +20,15 @@ lo_tax int not null,
 lo_commitdate int not null,
 lo_shipmode char(10) not null
 ) WITH BLOCKPROPERTIES (
-  TYPE compressed_columnstore,
+  TYPE columnstore,
   SORT lo_orderkey,
-  COMPRESS ALL,
-  BLOCKSIZEMB 32);
+  BLOCKSIZEMB 16);
+--) WITH BLOCKPROPERTIES (
+--  TYPE compressed_columnstore,
+--  SORT lo_orderkey,
+--  COMPRESS ALL,
+--  BLOCKSIZEMB 16);
+-- CREATE INDEX sma_lo ON lineorder USING SMA;
 
 create table part (
 p_partkey int not null,
@@ -37,7 +42,8 @@ p_size int not null,
 p_container char(10) not null
 ) WITH BLOCKPROPERTIES (
   TYPE split_rowstore,
-  BLOCKSIZEMB 32);
+  BLOCKSIZEMB 16);
+-- CREATE INDEX sma_p ON part USING SMA;
 
 create table supplier (
 s_suppkey int not null,
@@ -49,7 +55,8 @@ s_region char(12) not null,
 s_phone char(15) not null
 ) WITH BLOCKPROPERTIES (
   TYPE split_rowstore,
-  BLOCKSIZEMB 32);
+  BLOCKSIZEMB 16);
+-- CREATE INDEX sma_s ON supplier USING SMA;
 
 create table customer (
 c_custkey int not null,
@@ -62,7 +69,8 @@ c_phone char(15) not null,
 c_mktsegment char(10) not null
 ) WITH BLOCKPROPERTIES (
   TYPE split_rowstore,
-  BLOCKSIZEMB 32);
+  BLOCKSIZEMB 16);
+-- CREATE INDEX sma_c ON customer USING SMA;
 
 create table ddate (
 d_datekey int not null,
@@ -84,5 +92,6 @@ d_holidayfl int not null,
 d_weekdayfl int not null
 ) WITH BLOCKPROPERTIES (
   TYPE split_rowstore,
-  BLOCKSIZEMB 2);
+  BLOCKSIZEMB 16);
+-- CREATE INDEX sma_d ON ddate USING SMA;
 
