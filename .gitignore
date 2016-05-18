@@ -1,3 +1,9 @@
 *.cfg
 tmp.sql
 tmp_store
+*.class
+*.jar
+ssb/spark/target/
+ssb/spark/log
+tpch/spark/target
+tpch/spark/log
