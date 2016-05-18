@@ -22,7 +22,7 @@ lo_shipmode char(10) not null
 ) WITH BLOCKPROPERTIES (
   TYPE columnstore,
   SORT lo_orderkey,
-  BLOCKSIZEMB 16);
+  BLOCKSIZEMB 4);
 --) WITH BLOCKPROPERTIES (
 --  TYPE compressed_columnstore,
 --  SORT lo_orderkey,
