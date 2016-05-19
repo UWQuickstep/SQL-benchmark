@@ -12,6 +12,7 @@
 - eg: if your spark  download is at  /u/r/l/rl/Downloads/spark-1.6.1
 this will be your **SPARK_HOME**, then the  configuration  directory would be 
 $SPARK_HOME/conf.
+
 ### Starting Spark
 - Start the spark master using 
 ```
