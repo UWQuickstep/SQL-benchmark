@@ -8,7 +8,8 @@
 - Download Spark 1.6.1 http://spark.apache.org/downloads.html. (you do not have to build spark)
 - Install sbt  from http://www.scala-sbt.org/0.13/docs/Setup.html
 - Once that is done copy the files in the conf directory into your spark  configuration directory
-eg: if your spark  download is at  /u/r/l/rl/Downloads/spark-1.6.1
+- Edit the  SPARK_LOCAL_DIRS property  to   a directory of  your choice where you are sure to get a lot of disk space. This property can be found in the spark-envs.sh file.
+- eg: if your spark  download is at  /u/r/l/rl/Downloads/spark-1.6.1
 this will be your **SPARK_HOME**, then the  configuration  directory would be 
 $SPARK_HOME/conf.
 ### Starting Spark
