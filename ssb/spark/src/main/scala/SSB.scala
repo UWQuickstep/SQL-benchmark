@@ -9,6 +9,7 @@ import java.io.File
 import Array._
 import java.nio.file.Paths
 import java.nio.file.Path
+import scala.collection.mutable.ArrayBuffer
 
 case class RunConfig(
     ssb_path: String = null,
@@ -16,6 +17,7 @@ case class RunConfig(
     iterations: Int = 5,
     cache_tables: Boolean = false,
     baseline: Option[Long] = None,
+    query_list:Seq[Int] = Seq(),
     partitions: String = "1")
 
 case class LineOrder (
@@ -110,6 +112,10 @@ object SSB {
       opt[Boolean]('h', "cache")
           .action((x, c) => c.copy(cache_tables = x))
           .text("Cache tables")
+      opt[Seq[Int]]('q',"queries")
+          .action{(x, c) => c.copy(query_list = x)}
+          .text("Queries to run")
+          .valueName("1,2,3 .....")
       help("help")
         .text("prints this usage text")
         }
@@ -127,14 +133,14 @@ object SSB {
         val conf = new SparkConf().setAppName(file_name.toString())
         val sc = new SparkContext(conf)
         val sqlContext : org.apache.spark.sql.SQLContext = new org.apache.spark.sql.SQLContext(sc)
-
+        var query_list_name = "Queries"
         import sqlContext.implicits._
         // setting shuffle partitions to 1
         println("Setting the shuffle partitions to: "+config.partitions)
         sqlContext.setConf("spark.sql.shuffle.partitions", config.partitions)
 
         var table_names = Array("lineorder", "part", "supplier", "customer", "ddate")
-
+        var query_list = config.query_list
         var iterations = config.iterations
 // for (i <- 0 until table_names.length) {
         //     val lineorder =  sc.textFile(f.getPath()).map(_.split("\\|")).map(p => LineOrder(p(0).trim.toInt, p(1).trim.toInt,p(2).trim.toInt,p(3).trim.toInt,p(4).trim.toInt,p(5).trim.toInt,p(6),p(7),p(8).trim.toInt,p(9).trim.toInt,p(10).trim.toInt,p(11).trim.toInt,p(12).trim.toInt,p(13).trim.toInt,p(14).trim.toInt,p(15).trim.toInt,p(16))).toDF()
@@ -194,11 +200,21 @@ object SSB {
         val Q12="select d_year, s_nation, p_category, sum(lo_revenue-lo_supplycost) as profit1 from lineorder, part, supplier, customer, ddate  where lo_custkey = c_custkey and lo_suppkey = s_suppkey and lo_partkey = p_partkey and lo_orderdate = d_datekey and c_region = 'AMERICA' and s_region = 'AMERICA' and (d_year = 1997 or d_year = 1998) and (p_mfgr = 'MFGR#1' or p_mfgr = 'MFGR#2') group by d_year, s_nation, p_category order by d_year, s_nation, p_category"
         val Q13="select d_year, s_city, p_brand1, sum(lo_revenue-lo_supplycost) as profit1 from lineorder, part, supplier, customer, ddate  where lo_custkey = c_custkey and lo_suppkey = s_suppkey and lo_partkey = p_partkey and lo_orderdate = d_datekey and c_region = 'AMERICA' and s_nation = 'UNITED STATES' and (d_year = 1997 or d_year = 1998) and p_category = 'MFGR#14' group by d_year, s_city, p_brand1 order by d_year, s_city, p_brand1"
 
-        var query_array = Array(Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10, Q11, Q12, Q13)
+        var queries = ArrayBuffer[String](Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10, Q11, Q12, Q13)
+        var query_array= ArrayBuffer[String]()
+        if (query_list.length == 0) {
+            query_array = queries
+            query_list_name=query_list_name+"+all" 
+        } else {
+           for (iter_count <-0 until query_list.length){
+             query_array += queries(query_list(iter_count)-1)
+             query_list_name = query_list_name +"_"+query_list(iter_count)
+          }
+        }
         // Array to store timing results
         var times_array = ofDim[Long](iterations,query_array.length)
         // Writer to write the results to file
-        val writer = new PrintWriter(new File(file_name+"_result.csv" ))
+        val writer = new PrintWriter(new File(file_name+"_"+query_list_name+"_result.csv" ))
         for (iter_count <- 0 until  iterations) {
           writer.write(""+(iter_count+1))
           for (i <- 0 until query_array.length) {
