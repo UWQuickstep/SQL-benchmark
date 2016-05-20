@@ -75,15 +75,30 @@ function run_queries {
   rm tmp.sql &>/dev/null
 }
 
+function analyze_tables {
+  # Runs the analyze command on quickstep. 
+  QSEXE="$QS $QS_ARGS_BASE $QS_ARGS_NUMA_RUN $QS_ARGS_STORAGE"
+  rm tmp.sql &>/dev/null
+  touch tmp.sql
+  echo "\analyze" >> tmp.sql
+  if ! $QSEXE < tmp.sql ;
+  then 
+    echo "Quickstep failed on analyze, exiting."
+    exit 1
+  fi
+  rm tmp.sql &> /dev/null
+}
+
 if [ ! -x $QS ] ; then
   echo "Given Quickstep executable not found: $QS"
   echo "Specify it in quickstep.cfg."
   exit
 fi
 
-# Load data.
+# Load and analyze data.
 if [ $LOAD_DATA = "true" ] ; then
   load_data
+  analyze_tables
 fi
 
 run_queries
