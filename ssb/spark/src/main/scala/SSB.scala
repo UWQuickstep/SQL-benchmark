@@ -92,7 +92,7 @@ case class Ddate (
  )
 object SSB {
   def main(args: Array[String]) {
-    
+
     val parser = new scopt.OptionParser[RunConfig]("spark-sql-perf") {
       head("SSB BenchMark on Spark", "0.2.0")
       opt[String]('d', "ssb_data").action { (x, c) => c.copy(ssb_path = x) }
@@ -123,38 +123,57 @@ object SSB {
 
     def run(config: RunConfig) {
         val ssb_path = config.ssb_path
-        val file_name = Paths.get(ssb_path).getFileName() 
+        val file_name = Paths.get(ssb_path).getFileName()
         val conf = new SparkConf().setAppName(file_name.toString())
         val sc = new SparkContext(conf)
         val sqlContext : org.apache.spark.sql.SQLContext = new org.apache.spark.sql.SQLContext(sc)
 
         import sqlContext.implicits._
         // setting shuffle partitions to 1
-        println("Setting the shuffle partitions to: "+config.partitions) 
+        println("Setting the shuffle partitions to: "+config.partitions)
         sqlContext.setConf("spark.sql.shuffle.partitions", config.partitions)
-        
+
         var table_names = Array("lineorder", "part", "supplier", "customer", "ddate")
-        
+
         var iterations = config.iterations
 // for (i <- 0 until table_names.length) {
         //     val lineorder =  sc.textFile(f.getPath()).map(_.split("\\|")).map(p => LineOrder(p(0).trim.toInt, p(1).trim.toInt,p(2).trim.toInt,p(3).trim.toInt,p(4).trim.toInt,p(5).trim.toInt,p(6),p(7),p(8).trim.toInt,p(9).trim.toInt,p(10).trim.toInt,p(11).trim.toInt,p(12).trim.toInt,p(13).trim.toInt,p(14).trim.toInt,p(15).trim.toInt,p(16))).toDF()
         // }
-         
+        val file_load_timer_writer = new PrintWriter(new File("load_times.csv" ))
         val f: java.io.File = new File(ssb_path ,"lineorder.tbl")
+
+        var start = System.currentTimeMillis()
         val lineorder =  sc.textFile(f.getPath()).map(_.split("\\|")).map(p => LineOrder(p(0).trim.toInt, p(1).trim.toInt,p(2).trim.toInt,p(3).trim.toInt,p(4).trim.toInt,p(5).trim.toInt,p(6),p(7),p(8).trim.toInt,p(9).trim.toInt,p(10).trim.toInt,p(11).trim.toInt,p(12).trim.toInt,p(13).trim.toInt,p(14).trim.toInt,p(15).trim.toInt,p(16))).toDF()
-        val customer = sc.textFile((new File(ssb_path, "customer.tbl")).getPath()).map(_.split("\\|")).map(p => Customer(p(0).trim.toInt, p(1),p(2),p(3),p(4),p(5),p(6),p(7))).toDF()
-
-        val supplier = sc.textFile((new File(ssb_path,"supplier.tbl")).getPath()).map(_.split("\\|")).map(p => Supplier(p(0).trim.toInt, p(1),p(2),p(3),p(4),p(5),p(6))).toDF()
-
-        val date = sc.textFile((new File(ssb_path,"date.tbl")).getPath()).map(_.split("\\|")).map(p => Ddate(p(0).trim.toInt, p(1),p(2),p(3),p(4).trim.toInt,p(5).trim.toInt,p(6),p(7).trim.toInt,p(8).trim.toInt,p(9).trim.toInt,p(10).trim.toInt,p(11).trim.toInt,p(12),p(13).trim.toInt,p(14).trim.toInt,p(15).trim.toInt,p(16).trim.toInt)).toDF()
-
-        val part = sc.textFile((new File(ssb_path,"part.tbl")).getPath()).map(_.split("\\|")).map(p => Part(p(0).trim.toInt, p(1),p(2),p(3),p(4),p(5),p(6),p(7).trim.toInt,p(8))).toDF()
-
         lineorder.registerTempTable("lineorder")
+        var end = System.currentTimeMillis()
+        file_load_timer_writer.write("lineorder,"+((end-start)))
+
+        start = System.currentTimeMillis()
+        val customer = sc.textFile((new File(ssb_path, "customer.tbl")).getPath()).map(_.split("\\|")).map(p => Customer(p(0).trim.toInt, p(1),p(2),p(3),p(4),p(5),p(6),p(7))).toDF()
         customer.registerTempTable("customer")
+        end = System.currentTimeMillis()
+        file_load_timer_writer.write("customer,"+((end-start)))
+
+        start = System.currentTimeMillis()
+        val supplier = sc.textFile((new File(ssb_path,"supplier.tbl")).getPath()).map(_.split("\\|")).map(p => Supplier(p(0).trim.toInt, p(1),p(2),p(3),p(4),p(5),p(6))).toDF()
         supplier.registerTempTable("supplier")
+        end = System.currentTimeMillis()
+        file_load_timer_writer.write("supplier"+((end-start)))
+
+        start = System.currentTimeMillis()
+        val date = sc.textFile((new File(ssb_path,"date.tbl")).getPath()).map(_.split("\\|")).map(p => Ddate(p(0).trim.toInt, p(1),p(2),p(3),p(4).trim.toInt,p(5).trim.toInt,p(6),p(7).trim.toInt,p(8).trim.toInt,p(9).trim.toInt,p(10).trim.toInt,p(11).trim.toInt,p(12),p(13).trim.toInt,p(14).trim.toInt,p(15).trim.toInt,p(16).trim.toInt)).toDF()
         date.registerTempTable("ddate")
+        end = System.currentTimeMillis()
+        file_load_timer_writer.write("ddate:,"+((end-start)))
+
+        start = System.currentTimeMillis()
+        val part = sc.textFile((new File(ssb_path,"part.tbl")).getPath()).map(_.split("\\|")).map(p => Part(p(0).trim.toInt, p(1),p(2),p(3),p(4),p(5),p(6),p(7).trim.toInt,p(8))).toDF()
         part.registerTempTable("part")
+        end = System.currentTimeMillis()
+        file_load_timer_writer.write("part,"+((end-start)))
+
+        file_load_timer_writer.close()
+
         if (config.cache_tables) {
             for (i <- 0 until table_names.length) {
               sqlContext.cacheTable(table_names(i))
@@ -181,16 +200,16 @@ object SSB {
         // Writer to write the results to file
         val writer = new PrintWriter(new File(file_name+"_result.csv" ))
         for (iter_count <- 0 until  iterations) {
-          writer.write(""+(iter_count+1)) 
+          writer.write(""+(iter_count+1))
           for (i <- 0 until query_array.length) {
             writer.write(",")
-            val start = System.currentTimeMillis()
+            var start = System.currentTimeMillis()
             val q_rdd = sqlContext.sql(query_array(i))
-            q_rdd.count()
-            val end = System.currentTimeMillis()
+            println("Result Count:"+q_rdd.count())
+            var end = System.currentTimeMillis()
             times_array(iter_count)(i) = end - start
             writer.write((end - start)+"")
-            System.out.println( times_array(iter_count)(i)/1000)
+            System.out.println("Execution Time:"+ times_array(iter_count)(i)/1000)
           }
         writer.write("\n")
         }
