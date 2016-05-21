@@ -1,5 +1,5 @@
-SSB_TABLE_FILES_DIR="/slowdisk/SQL-benchmark-data-generator/ssbgen"
+SSB_TABLE_FILES_DIR="/path/to/ssb/tables"
 
-POSTGRES_EXEC="/fastdisk/postgres/bin/psql"
+POSTGRES_EXEC="/path/to/psql"
 
-POSTGRES_DB_NAME="ssb-test"
+POSTGRES_DB_NAME="name-of-database"
