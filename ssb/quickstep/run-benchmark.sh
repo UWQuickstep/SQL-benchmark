@@ -47,6 +47,13 @@ function load_data {
       let COUNTER=COUNTER+1 
     done
     echo "Done loading. Loaded $COUNTER files."
+
+    # Print the disk footprint of the newly created database
+    CUT=" | cut -f 1"
+    DBSIZE="du -m $QS_STORAGE"$CUT
+    echo -n "Datatbase footprint in MB is: "
+    eval $DBSIZE
+
   else
     echo "SSB data folder $SSB_DATA_PATH not found, quitting"
     exit
