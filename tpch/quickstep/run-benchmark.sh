@@ -65,25 +65,28 @@ function load_data {
 function run_queries {
   # Runs each SSB query several times.
   QSEXE="$QS $QS_ARGS_BASE $QS_ARGS_NUMA_RUN $QS_ARGS_STORAGE"
+  TOTALRUNS=5
   queries=( 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 )
+
   for query in ${queries[@]} ; do
     echo "Query $query.sql"
     rm tmp.sql &>/dev/null
     touch tmp.sql
-    # run each query 5 times.
-    for i in `seq 1 5`;
+    # Run each query a variable number of times.
+    for i in `seq 1 $TOTALRUNS`;
     do
       cat $query.sql >> tmp.sql 
     done
-    # Run quickstep with with a timeout of 75 minutes. This is because no set of
-    # queries should run over 75 minutes.
-    timeout 75m $QSEXE < tmp.sql
-    if [ $? = 124 ] ;
+    # Run quickstep with with a timeout of 5 minutes. This is because no query
+    # should run over 5 minutes.    
+    timeout 15m $QSEXE < tmp.sql
+    rc=$?
+    if [ $rc = 124 ] ;
     then
-      echo "Quickstep timed out on query $query, continuing to next query."
-    elif [ $? != 0  ] ;
+      echo "Quickstep timed out on query $query, continueing to next query."
+    elif [ $rc != 0  ] ;
     then
-      echo "Quickstep failed on query $query, continuing to next query."
+      echo "Quickstep failed on query $query, continueing to next query."
     fi
   done
   rm tmp.sql &>/dev/null
