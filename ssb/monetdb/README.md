@@ -52,8 +52,4 @@ mclient -d dbname --interactive
 # show all tables: \d
 # quit: \q
 
-# Set Properties of Monet.
-monetdb stop dbname
-monetdb set nthreads=1 dbname
-monetdb get nthreads dbname
 ```
