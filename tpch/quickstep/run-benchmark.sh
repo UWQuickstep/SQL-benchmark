@@ -47,6 +47,7 @@ function load_data {
         TBL="lineitem"
       fi
 
+      echo "Loading" $TBL "from file: " $tblfile; 
       if ! $QSEXE <<< "COPY $TBL FROM '$tblfile' WITH (DELIMITER '|');" ;
       then
         echo "Quickstep load failed."; 
@@ -56,6 +57,13 @@ function load_data {
       let COUNTER=COUNTER+1 
     done
     echo "Done loading. Loaded $COUNTER files."
+
+    # Print the disk footprint of the newly created database
+    CUT=" | cut -f 1"
+    DBSIZE="du -m $QS_STORAGE"$CUT
+    echo -n "Datatbase footprint in MB is: "
+    eval $DBSIZE
+
   else
     echo "SSB data folder $SSB_DATA_PATH not found, quitting"
     exit
@@ -75,19 +83,37 @@ function run_queries {
     do
       cat $query.sql >> tmp.sql 
     done
-    # Run quickstep with with a timeout of 75 minutes. This is because no set of
-    # queries should run over 75 minutes.
-    timeout 75m $QSEXE < tmp.sql
-    if [ $? = 124 ] ;
-    then
-      echo "Quickstep timed out on query $query, continuing to next query."
-    elif [ $? != 0  ] ;
-    then
-      echo "Quickstep failed on query $query, continuing to next query."
-    fi
+
+    $QSEXE < tmp.sql
+
+    # Run quickstep with with a timeout of 30 minutes. This is because no set of
+    # queries should run over 30 minutes.
+    # timeout 30m $QSEXE < tmp.sql
+    # if [ $? = 124 ] ;
+    # then
+    #   echo "Quickstep timed out on query $query, continuing to next query."
+    # elif [ $? != 0  ] ;
+    # then
+    #   echo "Quickstep failed on query $query, continuing to next query."
+    # fi
   done
   rm tmp.sql &>/dev/null
 }
+
+function analyze_tables {
+  # Runs the analyze command on quickstep.
+  QSEXE="$QS $QS_ARGS_BASE $QS_ARGS_NUMA_RUN $QS_ARGS_STORAGE"
+  rm tmp.sql &>/dev/null
+  touch tmp.sql
+  echo "\analyze" >> tmp.sql
+  if ! $QSEXE < tmp.sql ;
+  then
+    echo "Quickstep failed on analyze, exiting."
+    exit 1
+  fi
+  rm tmp.sql &> /dev/null
+}
+
 
 if [ ! -x $QS ] ; then
   echo "Given Quickstep executable not found: $QS"
@@ -98,6 +124,7 @@ fi
 # Load data.
 if [ $LOAD_DATA = "true" ] ; then
   load_data
+  analyze_tables
 fi
 
 run_queries
