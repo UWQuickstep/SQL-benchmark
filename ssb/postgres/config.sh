@@ -1,5 +1,5 @@
-SSB_TABLE_FILES_DIR="/path/to/ssb/tables"
+SSB_TABLE_FILES_DIR="/slowdisk/data/ssb/sf100"
 
-POSTGRES_EXEC="/path/to/psql"
+POSTGRES_EXEC="/fastdisk/postgres-beta/bin/psql"
 
-POSTGRES_DB_NAME="name-of-database"
+POSTGRES_DB_NAME="ssb100"

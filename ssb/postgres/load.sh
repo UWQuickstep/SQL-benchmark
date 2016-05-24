@@ -18,6 +18,7 @@ for table_name in "${table_list[@]}"; do
     echo "Importing table ${table_name} ..."
     table_file_path="${SSB_TABLE_FILES_DIR}/${table_name}.tbl"
     $POSTGRES_EXEC -d $POSTGRES_DB_NAME <<EOF
+    \\timing on
     COPY ${table_name} FROM '${table_file_path}' WITH DELIMITER '|'
 EOF
 done
@@ -25,6 +26,7 @@ echo "Importing is done."
 
 echo "Adding foreign key constraints..."
 $POSTGRES_EXEC -d $POSTGRES_DB_NAME <<EOF
+\\timing on
 ALTER TABLE lineorder
 ADD FOREIGN KEY(lo_custkey) REFERENCES customer(c_custkey);
 
