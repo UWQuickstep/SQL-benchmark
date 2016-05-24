@@ -20,3 +20,8 @@ sudo mount /dev/sdb1 /slowdisk
 sudo mkfs.ext4 /dev/sdc1
 sudo mkdir /fastdisk
 sudo mount /dev/sdc1 /fastdisk
+
+sudo chmod a+r /slowdisk
+sudo chmod a+r /fastdisk
+sudo chmod a+w /slowdisk
+sudo chmod a+w /fastdisk
