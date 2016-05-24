@@ -10,7 +10,8 @@ for i in `seq -f "%02g" 1 13`; do
         query=`cat "${query_file}"`
         explain_query="EXPLAIN ANALYZE ${query}"
         $POSTGRES_EXEC -d $POSTGRES_DB_NAME <<EOF
-	    $explain_query
-EOF
+            \\timing on
+	    $query
+EOF > /dev/null
     done;
 done;
