@@ -13,17 +13,13 @@ If your spark download is in /home/spark-1.6.1/. The spark home can be set as :
   export SPARK_HOME=/home/spark-1.6.1
 ```
 - Once that is done copy the files in the conf directory into your spark  configuration directory. The spark configuration directory can be found in **$SPARK_HOME/conf**.
-```
-cp -r  conf  $SPARK_HOME/conf
-```
+
 #### Editing the configuration files:
-```
-cd $SPARK_HOME/conf
-```
-- Edit the  SPARK_LOCAL_DIRS property  to  a directory of  your choice where you are sure to get a lot of disk space. This property can be found in the **spark-envs.sh** file.
-- eg: if your spark  download is at  /u/r/l/rl/Downloads/spark-1.6.1
-this will be your **SPARK_HOME**, then the  configuration  directory would be
-$SPARK_HOME/conf.
+
+##### spark-envs.sh
+- **SPARK_LOCAL_DIRS ** edit this  property to point to a directory  where you are sure to get a lot of disk space. This property controls the location that  spark uses for disk  writes.
+- **SPARK_WORKER_INSTANCES **  This property controls the number of workers spawned when the command  **$SPARK_HOME/sbin/start-slave.sh** is run. The default value is 1.
+- **SPARK_WORKER_CORES** This property controls the number of cores assigned to a worker. If ** SPARK_WORKER_INSTANCES ** is set to 1 then, this parameter can be set to the total number of cores. If ** SPARK_WORKER_INSTANCES ** is set to greater than 1, this parameter should be  tuned to  limit the number of cores per worker. A correct number would be **NUM_CORES/SPARK_WORKER_INSTANCES**
 
 ### Starting Spark
 - Start the spark master using
