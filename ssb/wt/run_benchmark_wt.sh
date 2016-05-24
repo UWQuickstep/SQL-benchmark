@@ -1,3 +1,9 @@
+echo "Loading settings from $1"
+if ! source $1 ; then echo "Failed to load config" ; exit 1 ; fi
+
+# Print some debug information about this test.
+cat $1
+
 QS_ARGS_STORAGE="-storage_path="$QS_STORAGE
 
 
@@ -44,10 +50,9 @@ if [ ! -x $QS ] ; then
 fi
 
 # Load and analyze data.
-#if [ $LOAD_DATA = "true" ] ; then
-  #load_data
+if [ $LOAD_DATA = "true" ] ; then
+  load_data
   #analyze_tables
-#fi
-#analyze_tables
+fi
 run_queries
 
