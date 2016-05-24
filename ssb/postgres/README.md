@@ -33,5 +33,5 @@ mv /fastdisk/postgres-beta-data/postgresql.conf /fastdisk/postgres-beta-data/pos
 # Copy the custom configuration file.
 cp /PATH/TO/REPO/ssb/postgres/postgresq.conf /fastdisk/postgres-beta-data/
 # Restart the database.
-/fastdisk/postgres-beta/bin/pg_ctl -D /fastdisk/postgres-beta-data start -l /fastdisk/postgres.log
+/fastdisk/postgres-beta/bin/pg_ctl -D /fastdisk/postgres-beta-data restart
 ```
