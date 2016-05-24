@@ -16,6 +16,7 @@ case class RunConfig(
     filter: Option[String] = None,
     iterations: Int = 5,
     cache_tables: Boolean = false,
+    run_queries:Boolean = true,
     baseline: Option[Long] = None,
     query_list:Seq[Int] = Seq(),
     partitions: String = "1")
@@ -112,6 +113,9 @@ object SSB {
       opt[Boolean]('h', "cache")
           .action((x, c) => c.copy(cache_tables = x))
           .text("Cache tables")
+      opt[Boolean]('r', "run_queries")
+          .action((x, c) => c.copy(run_queries = x))
+          .text("run queries")
       opt[Seq[Int]]('q',"queries")
           .action{(x, c) => c.copy(query_list = x)}
           .text("Queries to run")
@@ -151,41 +155,53 @@ object SSB {
         var start = System.currentTimeMillis()
         val lineorder =  sc.textFile(f.getPath()).map(_.split("\\|")).map(p => LineOrder(p(0).trim.toInt, p(1).trim.toInt,p(2).trim.toInt,p(3).trim.toInt,p(4).trim.toInt,p(5).trim.toInt,p(6),p(7),p(8).trim.toInt,p(9).trim.toInt,p(10).trim.toInt,p(11).trim.toInt,p(12).trim.toInt,p(13).trim.toInt,p(14).trim.toInt,p(15).trim.toInt,p(16))).toDF()
         lineorder.registerTempTable("lineorder")
+        sqlContext.cacheTable("lineorder")
+        sqlContext.sql("SELECT count(1) FROM lineorder").count();
         var end = System.currentTimeMillis()
         file_load_timer_writer.write("lineorder,"+((end-start))+"\n")
+        file_load_timer_writer.write("\n")
 
         start = System.currentTimeMillis()
         val customer = sc.textFile((new File(ssb_path, "customer.tbl")).getPath()).map(_.split("\\|")).map(p => Customer(p(0).trim.toInt, p(1),p(2),p(3),p(4),p(5),p(6),p(7))).toDF()
         customer.registerTempTable("customer")
+        sqlContext.sql("SELECT count(1) FROM customer").count();
         end = System.currentTimeMillis()
         file_load_timer_writer.write("customer,"+((end-start))+"\n")
+        file_load_timer_writer.write("\n")
 
         start = System.currentTimeMillis()
         val supplier = sc.textFile((new File(ssb_path,"supplier.tbl")).getPath()).map(_.split("\\|")).map(p => Supplier(p(0).trim.toInt, p(1),p(2),p(3),p(4),p(5),p(6))).toDF()
         supplier.registerTempTable("supplier")
+        sqlContext.sql("SELECT count(1) FROM supplier").count();
         end = System.currentTimeMillis()
         file_load_timer_writer.write("supplier"+((end-start))+"\n")
+        file_load_timer_writer.write("\n")
 
         start = System.currentTimeMillis()
         val date = sc.textFile((new File(ssb_path,"date.tbl")).getPath()).map(_.split("\\|")).map(p => Ddate(p(0).trim.toInt, p(1),p(2),p(3),p(4).trim.toInt,p(5).trim.toInt,p(6),p(7).trim.toInt,p(8).trim.toInt,p(9).trim.toInt,p(10).trim.toInt,p(11).trim.toInt,p(12),p(13).trim.toInt,p(14).trim.toInt,p(15).trim.toInt,p(16).trim.toInt)).toDF()
         date.registerTempTable("ddate")
+        sqlContext.sql("SELECT count(1) FROM ddate").count();
         end = System.currentTimeMillis()
         file_load_timer_writer.write("ddate:,"+((end-start))+"\n")
+        file_load_timer_writer.write("\n")
 
         start = System.currentTimeMillis()
         val part = sc.textFile((new File(ssb_path,"part.tbl")).getPath()).map(_.split("\\|")).map(p => Part(p(0).trim.toInt, p(1),p(2),p(3),p(4),p(5),p(6),p(7).trim.toInt,p(8))).toDF()
         part.registerTempTable("part")
+        sqlContext.sql("SELECT count(1) FROM part").count();
         end = System.currentTimeMillis()
         file_load_timer_writer.write("part,"+((end-start))+"\n")
+        file_load_timer_writer.write("\n")
 
         file_load_timer_writer.close()
 
-        if (config.cache_tables) {
+        /*if (config.cache_tables) {
             for (i <- 0 until table_names.length) {
               sqlContext.cacheTable(table_names(i))
               sqlContext.sql("SELECT * FROM "+table_names(i)).count();
             }
-         }
+         }*/
+        if (config.run_queries) {
         val Q1="select sum(lo_extendedprice*lo_discount) as revenue from lineorder,ddate where lo_orderdate = d_datekey and d_year = 1993 and lo_discount between 1 and 3 and lo_quantity < 25"
         val Q2="select sum(lo_extendedprice*lo_discount) as revenue from lineorder,ddate where lo_orderdate = d_datekey and d_yearmonthnum = 199401 and lo_discount between 4 and 6 and lo_quantity between 26 and 35"
         val Q3="select sum(lo_extendedprice*lo_discount) as revenue from lineorder,ddate where lo_orderdate = d_datekey and d_weeknuminyear = 6 and d_year = 1994 and lo_discount between 5 and 7 and lo_quantity between 36 and 40"
@@ -230,6 +246,7 @@ object SSB {
         writer.write("\n")
         }
         writer.close()
+      }
       }
    }
 }
