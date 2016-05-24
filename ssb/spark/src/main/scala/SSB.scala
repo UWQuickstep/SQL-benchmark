@@ -152,31 +152,31 @@ object SSB {
         val lineorder =  sc.textFile(f.getPath()).map(_.split("\\|")).map(p => LineOrder(p(0).trim.toInt, p(1).trim.toInt,p(2).trim.toInt,p(3).trim.toInt,p(4).trim.toInt,p(5).trim.toInt,p(6),p(7),p(8).trim.toInt,p(9).trim.toInt,p(10).trim.toInt,p(11).trim.toInt,p(12).trim.toInt,p(13).trim.toInt,p(14).trim.toInt,p(15).trim.toInt,p(16))).toDF()
         lineorder.registerTempTable("lineorder")
         var end = System.currentTimeMillis()
-        file_load_timer_writer.write("lineorder,"+((end-start)))
+        file_load_timer_writer.write("lineorder,"+((end-start))+"\n")
 
         start = System.currentTimeMillis()
         val customer = sc.textFile((new File(ssb_path, "customer.tbl")).getPath()).map(_.split("\\|")).map(p => Customer(p(0).trim.toInt, p(1),p(2),p(3),p(4),p(5),p(6),p(7))).toDF()
         customer.registerTempTable("customer")
         end = System.currentTimeMillis()
-        file_load_timer_writer.write("customer,"+((end-start)))
+        file_load_timer_writer.write("customer,"+((end-start))+"\n")
 
         start = System.currentTimeMillis()
         val supplier = sc.textFile((new File(ssb_path,"supplier.tbl")).getPath()).map(_.split("\\|")).map(p => Supplier(p(0).trim.toInt, p(1),p(2),p(3),p(4),p(5),p(6))).toDF()
         supplier.registerTempTable("supplier")
         end = System.currentTimeMillis()
-        file_load_timer_writer.write("supplier"+((end-start)))
+        file_load_timer_writer.write("supplier"+((end-start))+"\n")
 
         start = System.currentTimeMillis()
         val date = sc.textFile((new File(ssb_path,"date.tbl")).getPath()).map(_.split("\\|")).map(p => Ddate(p(0).trim.toInt, p(1),p(2),p(3),p(4).trim.toInt,p(5).trim.toInt,p(6),p(7).trim.toInt,p(8).trim.toInt,p(9).trim.toInt,p(10).trim.toInt,p(11).trim.toInt,p(12),p(13).trim.toInt,p(14).trim.toInt,p(15).trim.toInt,p(16).trim.toInt)).toDF()
         date.registerTempTable("ddate")
         end = System.currentTimeMillis()
-        file_load_timer_writer.write("ddate:,"+((end-start)))
+        file_load_timer_writer.write("ddate:,"+((end-start))+"\n")
 
         start = System.currentTimeMillis()
         val part = sc.textFile((new File(ssb_path,"part.tbl")).getPath()).map(_.split("\\|")).map(p => Part(p(0).trim.toInt, p(1),p(2),p(3),p(4),p(5),p(6),p(7).trim.toInt,p(8))).toDF()
         part.registerTempTable("part")
         end = System.currentTimeMillis()
-        file_load_timer_writer.write("part,"+((end-start)))
+        file_load_timer_writer.write("part,"+((end-start))+"\n")
 
         file_load_timer_writer.close()
 
@@ -204,7 +204,7 @@ object SSB {
         var query_array= ArrayBuffer[String]()
         if (query_list.length == 0) {
             query_array = queries
-            query_list_name=query_list_name+"+all" 
+            query_list_name=query_list_name+"+all"
         } else {
            for (iter_count <-0 until query_list.length){
              query_array += queries(query_list(iter_count)-1)
