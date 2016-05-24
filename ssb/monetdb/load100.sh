@@ -21,8 +21,9 @@ for tblfile in $SSB100_PATH/*.tbl* ; do
   then
     TBL="part"
   fi
-
-  if ! mclient -d ssb100 --interactive=ms <<< "COPY INTO $TBL FROM '$tblfile' DELIMITERS '|','\n';";
+  
+  echo "Loading $TBL..."
+  if ! mclient -p 54322 -d ssb100 --interactive=ms <<< "COPY INTO $TBL FROM '$tblfile' DELIMITERS '|','\n';";
   then
     echo "MonetDB load failed."; 
     exit 1;

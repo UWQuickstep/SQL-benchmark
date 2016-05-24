@@ -1,9 +1,9 @@
 source monetdb.cfg
 
-monetdb stop ssb100
-monetdb destroy ssb100
+monetdb -p 54322 stop ssb100
+monetdb -p 54322 destroy ssb100
 
-monetdb create ssb100
-monetdb release ssb100
+monetdb -p 54322 create ssb100
+monetdb -p 54322 release ssb100
 
-mclient -d ssb100 < create.sql
+mclient -p 54322 -d ssb100 < create.sql
