@@ -164,6 +164,7 @@ object SSB {
         start = System.currentTimeMillis()
         val customer = sc.textFile((new File(ssb_path, "customer.tbl")).getPath()).map(_.split("\\|")).map(p => Customer(p(0).trim.toInt, p(1),p(2),p(3),p(4),p(5),p(6),p(7))).toDF()
         customer.registerTempTable("customer")
+        sqlContext.cacheTable("customer")
         sqlContext.sql("SELECT count(1) FROM customer").count();
         end = System.currentTimeMillis()
         file_load_timer_writer.write("customer,"+((end-start))+"\n")
@@ -172,6 +173,7 @@ object SSB {
         start = System.currentTimeMillis()
         val supplier = sc.textFile((new File(ssb_path,"supplier.tbl")).getPath()).map(_.split("\\|")).map(p => Supplier(p(0).trim.toInt, p(1),p(2),p(3),p(4),p(5),p(6))).toDF()
         supplier.registerTempTable("supplier")
+        sqlContext.cacheTable("supplier")
         sqlContext.sql("SELECT count(1) FROM supplier").count();
         end = System.currentTimeMillis()
         file_load_timer_writer.write("supplier"+((end-start))+"\n")
@@ -180,6 +182,7 @@ object SSB {
         start = System.currentTimeMillis()
         val date = sc.textFile((new File(ssb_path,"date.tbl")).getPath()).map(_.split("\\|")).map(p => Ddate(p(0).trim.toInt, p(1),p(2),p(3),p(4).trim.toInt,p(5).trim.toInt,p(6),p(7).trim.toInt,p(8).trim.toInt,p(9).trim.toInt,p(10).trim.toInt,p(11).trim.toInt,p(12),p(13).trim.toInt,p(14).trim.toInt,p(15).trim.toInt,p(16).trim.toInt)).toDF()
         date.registerTempTable("ddate")
+        sqlContext.cacheTable("ddate")
         sqlContext.sql("SELECT count(1) FROM ddate").count();
         end = System.currentTimeMillis()
         file_load_timer_writer.write("ddate:,"+((end-start))+"\n")
@@ -188,6 +191,7 @@ object SSB {
         start = System.currentTimeMillis()
         val part = sc.textFile((new File(ssb_path,"part.tbl")).getPath()).map(_.split("\\|")).map(p => Part(p(0).trim.toInt, p(1),p(2),p(3),p(4),p(5),p(6),p(7).trim.toInt,p(8))).toDF()
         part.registerTempTable("part")
+        sqlContext.cacheTable("part")
         sqlContext.sql("SELECT count(1) FROM part").count();
         end = System.currentTimeMillis()
         file_load_timer_writer.write("part,"+((end-start))+"\n")
