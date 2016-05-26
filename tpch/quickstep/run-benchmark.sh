@@ -89,7 +89,7 @@ function run_queries {
     rc=$?
     if [ $rc = 124 ] ;
     then
-      echo "Quickstep timed out on query $query, continueing to next query."
+      echo "Quickstep timed out on query $query, continuing to next query."
     elif [ $rc != 0  ] ;
     then
       echo "Quickstep failed on query $query, continueing to next query."
