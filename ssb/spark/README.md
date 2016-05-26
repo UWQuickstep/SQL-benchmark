@@ -159,7 +159,7 @@ $SPARK_HOME/bin/spark-submit \
 - --executor-cores  Share of cores for each executor. Generally  **TOTAL_CORES/SPARK_WORKER_INSTANCES**
 - --num-executors  Number of worker instances.
 **Note: The confgiguration parameters have to be tuned to the size of the data set**
-- For the 50 scale factor we would use the something like
+- For the 50 scale factor we would use something like
 ```
 $SPARK_HOME/bin/spark-submit \
   --class SSB \
