@@ -1,4 +1,3 @@
-/* SSB.scala */
 import org.apache.spark.SparkContext
 import org.apache.spark.SparkContext._
 import org.apache.spark.SparkConf
@@ -11,6 +10,7 @@ import java.nio.file.Paths
 import java.nio.file.Path
 import scala.collection.mutable.ArrayBuffer
 
+/*Case Classes For getting the input options*/
 case class RunConfig(
     ssb_path: String = null,
     filter: Option[String] = None,
@@ -20,7 +20,7 @@ case class RunConfig(
     baseline: Option[Long] = None,
     query_list:Seq[Int] = Seq(),
     partitions: String = "1")
-
+/*Case class for getting the input data*/
 case class LineOrder (
  lo_orderkey : Int,
  lo_linenumber : Int,
@@ -93,6 +93,7 @@ case class Ddate (
  d_holidayfl : Int,
  d_weekdayfl : Int
  )
+/*Class for runnig the SSB code*/
 object SSB {
   def main(args: Array[String]) {
 
@@ -146,9 +147,6 @@ object SSB {
         var table_names = Array("lineorder", "part", "supplier", "customer", "ddate")
         var query_list = config.query_list
         var iterations = config.iterations
-// for (i <- 0 until table_names.length) {
-        //     val lineorder =  sc.textFile(f.getPath()).map(_.split("\\|")).map(p => LineOrder(p(0).trim.toInt, p(1).trim.toInt,p(2).trim.toInt,p(3).trim.toInt,p(4).trim.toInt,p(5).trim.toInt,p(6),p(7),p(8).trim.toInt,p(9).trim.toInt,p(10).trim.toInt,p(11).trim.toInt,p(12).trim.toInt,p(13).trim.toInt,p(14).trim.toInt,p(15).trim.toInt,p(16))).toDF()
-        // }
         val file_load_timer_writer = new PrintWriter(new File("load_times.csv" ))
         val f: java.io.File = new File(ssb_path ,"lineorder.tbl")
 
@@ -212,19 +210,19 @@ object SSB {
         val Q4="select sum(lo_revenue), d_year, p_brand1 from lineorder, part, supplier,ddate  where lo_orderdate = d_datekey and lo_partkey = p_partkey and lo_suppkey = s_suppkey and p_category = 'MFGR#12' and s_region = 'AMERICA' group by d_year, p_brand1 order by d_year, p_brand1"
         val Q5="select sum(lo_revenue), d_year, p_brand1 from lineorder, part, supplier,ddate  where lo_orderdate = d_datekey and lo_partkey = p_partkey and lo_suppkey = s_suppkey and p_brand1 between 'MFGR#2221' and 'MFGR#2228' and s_region = 'ASIA' group by d_year, p_brand1 order by d_year, p_brand1"
         val Q6="select sum(lo_revenue), d_year, p_brand1 from lineorder,part, supplier,ddate  where lo_orderdate = d_datekey and lo_partkey = p_partkey and lo_suppkey = s_suppkey and p_brand1 = 'MFGR#2221' and s_region = 'EUROPE' group by d_year, p_brand1 order by d_year, p_brand1"
-        val Q7="select c_nation, s_nation, d_year, sum(lo_revenue) as revenue from lineorder,supplier,customer, ddate where lo_custkey = c_custkey and lo_suppkey = s_suppkey and lo_orderdate = d_datekey and c_region = 'ASIA' and s_region = 'ASIA' and d_year >= 1992 and d_year <= 1997 group by c_nation, s_nation, d_year order by d_year asc, revenue desc"
-        val Q8="select c_city, s_city, d_year, sum(lo_revenue) as revenue from  lineorder,supplier,customer, ddate where lo_custkey = c_custkey and lo_suppkey = s_suppkey and lo_orderdate = d_datekey and c_nation = 'UNITED STATES' and s_nation = 'UNITED STATES' and d_year >= 1992 and d_year <= 1997 group by c_city, s_city, d_year order by d_year asc, revenue desc"
-        val Q9="select c_city, s_city, d_year, sum(lo_revenue) as revenue from lineorder,supplier,customer,ddate where lo_custkey = c_custkey and lo_suppkey = s_suppkey and lo_orderdate = d_datekey and (c_city='UNITED KI1' or c_city='UNITED KI5') and (s_city='UNITED KI1' or s_city='UNITED KI5') and d_year >= 1992 and d_year <= 1997 group by c_city, s_city, d_year order by d_year asc, revenue desc"
-        val Q10="select c_city, s_city, d_year, sum(lo_revenue) as revenue from lineorder, supplier,ddate,customer where lo_custkey = c_custkey and lo_suppkey = s_suppkey and lo_orderdate = d_datekey and (c_city='UNITED KI1' or c_city='UNITED KI5') and (s_city='UNITED KI1' or s_city='UNITED KI5') and d_yearmonth = 'Dec1997' group by c_city, s_city, d_year order by d_year asc, revenue desc"
-        val Q11="select d_year, c_nation, sum(lo_revenue-lo_supplycost) as profit1 from  lineorder ,supplier, customer,part, ddate  where lo_custkey = c_custkey and lo_suppkey = s_suppkey and lo_partkey = p_partkey and lo_orderdate = d_datekey and c_region = 'AMERICA' and s_region = 'AMERICA' and (p_mfgr = 'MFGR#1' or p_mfgr = 'MFGR#2') group by d_year, c_nation order by d_year, c_nation"
-        val Q12="select d_year, s_nation, p_category, sum(lo_revenue-lo_supplycost) as profit1 from lineorder,ddate,supplier, customer, part  where lo_custkey = c_custkey and lo_suppkey = s_suppkey and lo_partkey = p_partkey and lo_orderdate = d_datekey and c_region = 'AMERICA' and s_region = 'AMERICA' and (d_year = 1997 or d_year = 1998) and (p_mfgr = 'MFGR#1' or p_mfgr = 'MFGR#2') group by d_year, s_nation, p_category order by d_year, s_nation, p_category"
-        val Q13="select d_year, s_city, p_brand1, sum(lo_revenue-lo_supplycost) as profit1 from lineorder, supplier,part, ddate,customer where lo_custkey = c_custkey and lo_suppkey = s_suppkey and lo_partkey = p_partkey and lo_orderdate = d_datekey and c_region = 'AMERICA' and s_nation = 'UNITED STATES' and (d_year = 1997 or d_year = 1998) and p_category = 'MFGR#14' group by d_year, s_city, p_brand1 order by d_year, s_city, p_brand1"
+        val Q7="select c_nation, s_nation, d_year, sum(lo_revenue) as revenue from lineorder,customer, supplier,ddate where lo_custkey = c_custkey and lo_suppkey = s_suppkey and lo_orderdate = d_datekey and c_region = 'ASIA' and s_region = 'ASIA' and d_year >= 1992 and d_year <= 1997 group by c_nation, s_nation, d_year order by d_year asc, revenue desc"
+        val Q8="select c_city, s_city, d_year, sum(lo_revenue) as revenue from  lineorder,customer, supplier,ddate where lo_custkey = c_custkey and lo_suppkey = s_suppkey and lo_orderdate = d_datekey and c_nation = 'UNITED STATES' and s_nation = 'UNITED STATES' and d_year >= 1992 and d_year <= 1997 group by c_city, s_city, d_year order by d_year asc, revenue desc"
+        val Q9="select c_city, s_city, d_year, sum(lo_revenue) as revenue from lineorder, customer, supplier,ddate where lo_custkey = c_custkey and lo_suppkey = s_suppkey and lo_orderdate = d_datekey and (c_city='UNITED KI1' or c_city='UNITED KI5') and (s_city='UNITED KI1' or s_city='UNITED KI5') and d_year >= 1992 and d_year <= 1997 group by c_city, s_city, d_year order by d_year asc, revenue desc"
+        val Q10="select c_city, s_city, d_year, sum(lo_revenue) as revenue from lineorder, customer, supplier,ddate where lo_custkey = c_custkey and lo_suppkey = s_suppkey and lo_orderdate = d_datekey and (c_city='UNITED KI1' or c_city='UNITED KI5') and (s_city='UNITED KI1' or s_city='UNITED KI5') and d_yearmonth = 'Dec1997' group by c_city, s_city, d_year order by d_year asc, revenue desc"
+        val Q11="select d_year, c_nation, sum(lo_revenue-lo_supplycost) as profit1 from  lineorder ,part , supplier, customer, ddate  where lo_custkey = c_custkey and lo_suppkey = s_suppkey and lo_partkey = p_partkey and lo_orderdate = d_datekey and c_region = 'AMERICA' and s_region = 'AMERICA' and (p_mfgr = 'MFGR#1' or p_mfgr = 'MFGR#2') group by d_year, c_nation order by d_year, c_nation"
+        val Q12="select d_year, s_nation, p_category, sum(lo_revenue-lo_supplycost) as profit1 from lineorder, part, supplier, customer, ddate  where lo_custkey = c_custkey and lo_suppkey = s_suppkey and lo_partkey = p_partkey and lo_orderdate = d_datekey and c_region = 'AMERICA' and s_region = 'AMERICA' and (d_year = 1997 or d_year = 1998) and (p_mfgr = 'MFGR#1' or p_mfgr = 'MFGR#2') group by d_year, s_nation, p_category order by d_year, s_nation, p_category"
+        val Q13="select d_year, s_city, p_brand1, sum(lo_revenue-lo_supplycost) as profit1 from lineorder, part, supplier, customer, ddate  where lo_custkey = c_custkey and lo_suppkey = s_suppkey and lo_partkey = p_partkey and lo_orderdate = d_datekey and c_region = 'AMERICA' and s_nation = 'UNITED STATES' and (d_year = 1997 or d_year = 1998) and p_category = 'MFGR#14' group by d_year, s_city, p_brand1 order by d_year, s_city, p_brand1"
 
         var queries = ArrayBuffer[String](Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10, Q11, Q12, Q13)
         var query_array= ArrayBuffer[String]()
         if (query_list.length == 0) {
             query_array = queries
-            query_list_name=query_list_name+"+all"
+            query_list_name=query_list_name+"_all"
         } else {
            for (iter_count <-0 until query_list.length){
              query_array += queries(query_list(iter_count)-1)
