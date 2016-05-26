@@ -92,7 +92,7 @@ function run_queries {
       echo "Quickstep timed out on query $query, continuing to next query."
     elif [ $rc != 0  ] ;
     then
-      echo "Quickstep failed on query $query, continueing to next query."
+      echo "Quickstep failed on query $query, continuing to next query."
     fi
 
     # Run quickstep with with a timeout of 30 minutes. This is because no set of
