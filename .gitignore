@@ -7,3 +7,4 @@ ssb/spark/target/
 ssb/spark/log
 tpch/spark/target
 tpch/spark/log
+.DS_Store
