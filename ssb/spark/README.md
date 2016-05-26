@@ -90,10 +90,10 @@ starting org.apache.spark.deploy.master.Master, logging to /fastdisk/spark-1.6.1
 cat /fastdisk/spark-1.6.1/logs/spark-rogers-org.apache.spark.deploy.master.Master-1-node-2.wtnobw.quickstep-pg0.wisc.cloudlab.us.out
 Spark Command: /usr/lib/jvm/java-7-openjdk-amd64//bin/java -cp /fastdisk/spark-1.6.1/conf/:/fastdisk/spark-1.6.1/assembly/target/scala-2.10/spark-assembly-1.6.1-hadoop2.2.0.jar:/fastdisk/spark-1.6.1/lib_managed/jars/datanucleus-api-jdo-3.2.6.jar:/fastdisk/spark-1.6.1/lib_managed/jars/datanucleus-core-3.2.10.jar:/fastdisk/spark-1.6.1/lib_managed/jars/datanucleus-rdbms-3.2.9.jar -Xms1g -Xmx1g -XX:MaxPermSize=256m org.apache.spark.deploy.master.Master --ip node-2.wtnobw.quickstep-pg0.wisc.cloudlab.us --port 7077 --webui-port 8080
 ```
-From the contents of the file, *org.apache.spark.deploy.master.Master --ip node-2.wtnobw.quickstep-pg0.wisc.cloudlab.us --port 7077 * gives us the master url and the port, i.e. **spark://node-2.wtnobw.quickstep-pg0.wisc.cloudlab.us:7077**.
-- The Web UI of the master can be accessred through **http://node-2.wtnobw.quickstep-pg0.wisc.cloudlab.us:8080**
+From the contents of the file, *org.apache.spark.deploy.master.Master --ip node-2.wtnobw.quickstep-pg0.wisc.cloudlab.us --port 7077 * gives us the master url and the port, i.e. ** spark://node-2.wtnobw.quickstep-pg0.wisc.cloudlab.us:7077 **.
+- The Web UI of the master can be accessred through ** http://node-2.wtnobw.quickstep-pg0.wisc.cloudlab.us:8080 **
 
-- use the master url obtained to start the slave as :
+- Use the master url obtained to start the slave as :
 ```
 $SPARK_HOME/sbin/start-slave.sh <master-url>
 
@@ -158,8 +158,9 @@ $SPARK_HOME/bin/spark-submit \
 - --executor-memory The memory  per executor.
 - --executor-cores  Share of cores for each executor. Generally  **TOTAL_CORES/SPARK_WORKER_INSTANCES**
 - --num-executors  Number of worker instances.
-**Note: The confgiguration parameters have to be tuned to the size of the data set**
-- For the 50 scale factor we would use something like
+
+**Note: The configuration parameters have to be tuned to the size of the data set**
+- **For the 50 scale factor we would use something like**
 ```
 $SPARK_HOME/bin/spark-submit \
   --class SSB \
@@ -173,6 +174,19 @@ $SPARK_HOME/bin/spark-submit \
   --cache true \
   --partitions  100
 ```
+#### Results:
+Once all the queries are done, two csv files are generated
+- load_times.csv This gives the loading times for each of the tables.
+- sf50_Queries+all_result.csv - This file is generated for the SSB50 scale factor. This has the runtimes of all the 13 queries for 5 iterations. The result is a 5 x 13 matrix where each row has a run time of all 13 queries for that iteration.
+- The runtimes can be obtained by post-processing the above csv file as  follows:
+
+```
+python process_result.py sf50_Queries+all_result.csv
+```
+This gives the run times for each of the 13 queries.
+
+
+
 #### References:
 - http://spark.apache.org/docs/latest/spark-standalone.html
 - http://spark.apache.org/docs/latest/sql-programming-guide.html
