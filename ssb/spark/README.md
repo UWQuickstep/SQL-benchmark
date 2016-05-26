@@ -4,7 +4,24 @@
 - sbt 1.0
 
 #### Installation:
-- Download and install scala 2.10.5 from http://www.scala-lang.org/download/2.10.5.html. Any 2.10 version should suffice.
+- Download  scala 2.10.5 from http://downloads.lightbend.com/scala/2.10.5/scala-2.10.5.tgz .
+```
+wget http://downloads.lightbend.com/scala/2.10.5/scala-2.10.5.tgz`
+```
+- Extract the archive
+```
+tar -zxvf scala-2.10.5
+```
+- Set the SCALA_HOME environment variable to point to the directory where you have extracted the archive
+```
+export SCALA_HOME=/fastdisk/scala-2.10.5
+
+```
+- Set the PATH environment variable to point to scala executable
+```
+export PATH=$SCALA_HOME/bin:$PATH
+
+```
 - Install sbt  from http://www.scala-sbt.org/0.13/docs/Setup.html
 - Download Spark 1.6.1 http://spark.apache.org/downloads.html. 
 - Set the SPARK_HOME environment variable.
