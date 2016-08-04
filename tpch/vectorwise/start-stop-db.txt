@@ -1,0 +1,8 @@
+# Start vectorwise process.
+sudo service actian-vectorVW start
+
+# Stop vectorwise process.
+sudo service actian-vectorVW stop
+
+# Restart vectorwise process.
+sudo service actian-vectorVW restart

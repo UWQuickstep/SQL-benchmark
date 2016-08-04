@@ -1,0 +1,31 @@
+# Download vectorwise tar file
+# Untar the tar file and cd to the directory. 
+# Vectorwise needs libaio.
+sudo apt-get update 
+sudo apt-get install libaio1
+
+# Import GPG public key.
+sudo apt-key add actian-vector-4.2.0-173-eval-linux-deb-amd64-key.asc
+
+# Copy the authstring file to the directory. This is important!
+
+# Create a file called responsefile with the following lines.
+# [ Instance Configuration ]
+rm responsefile &> /dev/null
+touch responsefile
+USER=`whoami`
+echo "II_USERID=$USER" >> responsefile
+echo "II_GROUPID=quickstep-PG0" >> responsefile
+
+# Use the express install, run as root.
+sudo ./express_install.sh -respfile $PWD/responsefile -acceptlicense
+
+# In your home directory, there should be multiple files .ing*
+# They can configure the environment e.g. PATH, LD_LIBRARY_PATH variables
+source ~/.ingVWsh
+
+# To confirm if vectorwise is on the path
+echo $PATH
+
+# Always overcommit memory. 
+sudo sysctl vm.overcommit_memory=1
