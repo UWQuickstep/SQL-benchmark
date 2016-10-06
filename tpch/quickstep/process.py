@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 # Take the raw benchmark output from a quickstep run and average the middle
 # three trials and output the results in csv
 
@@ -33,7 +35,10 @@ def process_file(fname):
       current_query = int(match[0])
     else:
       counts.append(float(match[1]))
-  query_avg[current_query] = avg(counts[1:-1])
+  if len(counts) > 0:
+    query_avg[current_query] = avg(counts[1:-1])
+  else:
+    query_avg[current_query] = -1
   
   for k in query_avg:
     #print "{},{}".format(k, query_avg[k])

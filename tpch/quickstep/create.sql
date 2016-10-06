@@ -61,14 +61,8 @@ CREATE TABLE partsupp (
   ps_supplycost DECIMAL NOT NULL,
   ps_comment CHAR(199) NOT NULL
 ) WITH BLOCKPROPERTIES (
-  TYPE compressed_columnstore,
-  SORT ps_partkey,
-  COMPRESS ALL,
+  TYPE split_rowstore,
   BLOCKSIZEMB 4);
---) WITH BLOCKPROPERTIES (
---  TYPE split_rowstore,
---  BLOCKSIZEMB 4);
--- CREATE INDEX partsuppSMA ON partsupp USING SMA;
 
 CREATE TABLE orders (
   o_orderkey INT NOT NULL,
@@ -81,14 +75,8 @@ CREATE TABLE orders (
   o_shippriority INT NOT NULL,
   o_comment CHAR(79) NOT NULL
 ) WITH BLOCKPROPERTIES (
-  TYPE compressed_columnstore,
-  SORT o_orderkey,
-  COMPRESS ALL,
+  TYPE split_rowstore,
   BLOCKSIZEMB 4);
---) WITH BLOCKPROPERTIES (
---  TYPE split_rowstore,
---  BLOCKSIZEMB 4);
--- CREATE INDEX ordersSMA ON orders USING SMA;
 
 CREATE TABLE lineitem (
   l_orderkey INT NOT NULL,
@@ -108,8 +96,5 @@ CREATE TABLE lineitem (
   l_shipmode CHAR(10) NOT NULL,
   l_comment CHAR(44) NOT NULL
 ) WITH BLOCKPROPERTIES (
-  TYPE compressed_columnstore,
-  SORT l_orderkey,
-  COMPRESS ALL,
+  TYPE split_rowstore,
   BLOCKSIZEMB 4);
--- CREATE INDEX sma_index ON lineitem(l_shipdate,l_receiptdate,l_quantity) USING SMA;
