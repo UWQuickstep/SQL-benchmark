@@ -2,7 +2,7 @@
 
 source config.sh
 
-for i in `seq -f "%02g" 1 13`; do
+for i in `seq -f "%02g" 1 22`; do
     echo "QUERY ${i}"
     for j in `seq 1 5`; do
         echo "Run ${j}"
@@ -11,7 +11,8 @@ for i in `seq -f "%02g" 1 13`; do
         explain_query="EXPLAIN ANALYZE ${query}"
         $POSTGRES_EXEC -d $POSTGRES_DB_NAME <<EOF
 \\timing on
-$query
+$query 
 EOF
     done;
 done;
+
