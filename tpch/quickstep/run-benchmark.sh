@@ -49,8 +49,8 @@ function load_data {
         TBL="lineitem"
       fi
 
-      echo "Loading" $TBL "from file: " $tblfile; 
-      if ! $QSEXE <<< "COPY $TBL FROM '$tblfile' WITH (DELIMITER '|');" ;
+      echo Loading $TBL from file: $tblfile; 
+      if ! echo "COPY $TBL FROM '$tblfile' WITH (DELIMITER '|');" | $QSEXE;
       then
         echo "Quickstep load failed."; 
         exit 1;
@@ -58,8 +58,8 @@ function load_data {
 
       let COUNTER=COUNTER+1 
     done
-    echo "Done loading. Loaded $COUNTER files."
-
+    echo Done loading. Loaded $COUNTER files.
+    $QSEXE <<< "\analyze"
     # Print the disk footprint of the newly created database
     CUT=" | cut -f 1"
     DBSIZE="du -m $QS_STORAGE"$CUT
@@ -77,6 +77,11 @@ function run_queries {
   QSEXE="$QS $QS_ARGS_BASE $QS_ARGS_NUMA_RUN $QS_ARGS_STORAGE"
   TOTALRUNS=5
   queries=( 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 )
+  if [ "$QUERIES" != "ALL" ]; then
+    unset queries
+    read -r -a queries <<< "$QUERIES"
+    echo "Running a subset of queries with length ${#queries[@]}"
+  fi
   echo $QSEXE
   for query in ${queries[@]} ; do
     echo "Query $query.sql"
