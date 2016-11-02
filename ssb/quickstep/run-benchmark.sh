@@ -4,7 +4,7 @@ echo "Loading settings from $1"
 if ! source $1 ; then echo "Failed to load config" ; exit 1 ; fi
 
 # Print some debug information about this test.
-cat $1
+grep -v ^# $1
 
 QS_ARGS_STORAGE="-storage_path="$QS_STORAGE
 
