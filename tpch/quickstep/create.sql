@@ -1,7 +1,7 @@
 CREATE TABLE region (
   r_regionkey INT NOT NULL,
   r_name CHAR(25) NOT NULL,
-  r_comment CHAR(152) NOT NULL
+  r_comment VARCHAR(152) NOT NULL
 ) WITH BLOCKPROPERTIES (
   TYPE split_rowstore,
   BLOCKSIZEMB 4);
@@ -10,7 +10,7 @@ CREATE TABLE nation (
   n_nationkey INT NOT NULL,
   n_name CHAR(25) NOT NULL,
   n_regionkey INT NOT NULL,
-  n_comment CHAR(152) NOT NULL
+  n_comment VARCHAR(152) NOT NULL
 ) WITH BLOCKPROPERTIES (
   TYPE split_rowstore,
   BLOCKSIZEMB 4);
@@ -18,38 +18,38 @@ CREATE TABLE nation (
 CREATE TABLE supplier (
   s_suppkey INT NOT NULL,
   s_name CHAR(25) NOT NULL,
-  s_address CHAR(40) NOT NULL,
+  s_address VARCHAR(40) NOT NULL,
   s_nationkey INT NOT NULL,
   s_phone CHAR(15) NOT NULL,
   s_acctbal DECIMAL NOT NULL,
-  s_comment CHAR(101) NOT NULL
+  s_comment VARCHAR(101) NOT NULL
 ) WITH BLOCKPROPERTIES (
   TYPE split_rowstore,
   BLOCKSIZEMB 4);
 
 CREATE TABLE customer (
   c_custkey INT NOT NULL,
-  c_name CHAR(25) NOT NULL,
-  c_address CHAR(40) NOT NULL,
+  c_name VARCHAR(25) NOT NULL,
+  c_address VARCHAR(40) NOT NULL,
   c_nationkey INT NOT NULL,
   c_phone CHAR(15) NOT NULL,
   c_acctbal DECIMAL NOT NULL,
   c_mktsegment CHAR(10) NOT NULL,
-  c_comment CHAR(117) NOT NULL
+  c_comment VARCHAR(117) NOT NULL
 ) WITH BLOCKPROPERTIES (
   TYPE split_rowstore,
   BLOCKSIZEMB 4);
 
 CREATE TABLE part (
   p_partkey INT NOT NULL,
-  p_name CHAR(55) NOT NULL,
+  p_name VARCHAR(55) NOT NULL,
   p_mfgr CHAR(25) NOT NULL,
   p_brand CHAR(10) NOT NULL,
-  p_type CHAR(25) NOT NULL,
+  p_type VARCHAR(25) NOT NULL,
   p_size INT NOT NULL,
   p_container CHAR(10) NOT NULL,
   p_retailprice DECIMAL NOT NULL,
-  p_comment CHAR(23) NOT NULL
+  p_comment VARCHAR(23) NOT NULL
 ) WITH BLOCKPROPERTIES (
   TYPE split_rowstore,
   BLOCKSIZEMB 4);
@@ -59,7 +59,7 @@ CREATE TABLE partsupp (
   ps_suppkey INT NOT NULL,
   ps_availqty INT NOT NULL,
   ps_supplycost DECIMAL NOT NULL,
-  ps_comment CHAR(199) NOT NULL
+  ps_comment VARCHAR(199) NOT NULL
 ) WITH BLOCKPROPERTIES (
   TYPE compressed_columnstore,
   SORT ps_partkey,
@@ -79,7 +79,7 @@ CREATE TABLE orders (
   o_orderpriority CHAR(15) NOT NULL,
   o_clerk CHAR(15) NOT NULL,
   o_shippriority INT NOT NULL,
-  o_comment CHAR(79) NOT NULL
+  o_comment VARCHAR(79) NOT NULL
 ) WITH BLOCKPROPERTIES (
   TYPE compressed_columnstore,
   SORT o_orderkey,
@@ -106,7 +106,7 @@ CREATE TABLE lineitem (
   l_receiptdate DATE NOT NULL,
   l_shipinstruct CHAR(25) NOT NULL,
   l_shipmode CHAR(10) NOT NULL,
-  l_comment CHAR(44) NOT NULL
+  l_comment VARCHAR(44) NOT NULL
 ) WITH BLOCKPROPERTIES (
   TYPE compressed_columnstore,
   SORT l_orderkey,
