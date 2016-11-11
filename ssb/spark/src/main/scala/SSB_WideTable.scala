@@ -20,7 +20,7 @@ case class RunConfig1(
     query_list:Seq[Int] = Seq(),
     partitions: String = "1")
 
-case class Widetable_1 (
+case class WideTable (
     lo_orderkey: Int,
     lo_linenumber: Int,
     lo_custkey: Int,
@@ -41,9 +41,7 @@ case class Widetable_1 (
     p_partkey: Int,
     p_name:String,
     p_mfgr: String,
-    p_category : String)
-
-case class Widetable_2 (
+    p_category : String,
     p_brand1 : String,
     p_color : String,
     p_type : String,
@@ -58,8 +56,7 @@ case class Widetable_2 (
     s_phone  : String ,
     c_custkey: Int,
     c_name  : String ,
-    c_address  : String)
-case class Widetable_3 (
+    c_address  : String,
     c_city  : String ,
     c_nation  : String ,
     c_region  : String ,
@@ -82,11 +79,7 @@ case class Widetable_3 (
     d_lastdayinmonthfl: Int,
     d_holidayfl: Int,
     d_weekdayfl: Int)
-case class WideTable (
-  wd_1 : Widetable_1,
-  wd_2 : Widetable_2,
-  wd_3 : Widetable_3
-  )
+
 object SSBWideTable {
   def main(args: Array[String]) {
 
@@ -145,7 +138,7 @@ object SSBWideTable {
 
         var start = System.currentTimeMillis()
         val widetable =  sc.textFile(f.getPath()).map(_.split("\\|")).map(p =>
-                                     WideTable(Widetable_1(
+                                     WideTable(
                                       p(0).trim.toInt,
                                       p(1).trim.toInt,
                                       p(2).trim.toInt,
@@ -166,8 +159,7 @@ object SSBWideTable {
                                       p(17).trim.toInt,
                                       p(18).trim,
                                       p(19).trim,
-                                      p(20).trim),
-                                      Widetable_2(
+                                      p(20).trim,
                                       p(21).trim,
                                       p(22).trim,
                                       p(23).trim,
@@ -182,8 +174,7 @@ object SSBWideTable {
                                       p(32).trim,
                                       p(33).trim.toInt,
                                       p(34).trim,
-                                      p(35).trim),
-                                      Widetable_3(
+                                      p(35).trim,
                                       p(36).trim,
                                       p(37).trim,
                                       p(38).trim,
@@ -206,12 +197,12 @@ object SSBWideTable {
                                       p(55).trim.toInt,
                                       p(56).trim.toInt,
                                       p(57).trim.toInt)
-                                     )).toDF()
+                                     ).toDF()
 
         widetable.registerTempTable("widetable")
         var end = System.currentTimeMillis()
         file_load_timer_writer.write("widetable,"+((end-start)))
-        widetable.write.parquet("/newDisk1/spark_storage/widetable.parquet")
+        //widetable.write.parquet("/newDisk1/spark_storage/widetable.parquet")
 
         file_load_timer_writer.close()
 
@@ -228,9 +219,9 @@ object SSBWideTable {
         val Q5="select sum(lo_revenue), d_year, p_brand1 from widetable where p_brand1 between 'MFGR#2221' and 'MFGR#2228' and s_region = 'ASIA' group by d_year, p_brand1 order by d_year, p_brand1"
         val Q6="select sum(lo_revenue), d_year, p_brand1 from widetable where p_brand1 = 'MFGR#2221' and s_region = 'EUROPE' group by d_year, p_brand1 order by d_year, p_brand1"
         val Q7="select c_nation, s_nation, d_year, sum(lo_revenue) as revenue from widetable where c_region = 'ASIA' and s_region = 'ASIA' and d_year >= 1992 and d_year <= 1997 group by c_nation, s_nation, d_year order by d_year asc, revenue desc"
-        val Q8="select c_city, s_city, d_year, sum(lo_revenue) as revenue from widetable where c_nation = 'UNITED STATES' and s_nation = 'UNITED STATES' and d_year >= 1992 and d_year <= 1997 group by c_city, s_city, d_year order by d_year asc, revenue desc;"
-        val Q9="select c_city, s_city, d_year, sum(lo_revenue) as revenue from widetable where (c_city='UNITED KI1' or c_city='UNITED KI5') and (s_city='UNITED KI1' or s_city='UNITED KI5') and d_year >= 1992 and d_year <= 1997 group by c_city, s_city, d_year order by d_year asc, revenue desc;"
-        val Q10="select c_city, s_city, d_year, sum(lo_revenue) as revenue from widetable where (c_city='UNITED KI1' or c_city='UNITED KI5') and (s_city='UNITED KI1' or s_city='UNITED KI5') and d_yearmonth = 'Dec1997' group by c_city, s_city, d_year order by d_year asc, revenue desc;"
+        val Q8="select c_city, s_city, d_year, sum(lo_revenue) as revenue from widetable where c_nation = 'UNITED STATES' and s_nation = 'UNITED STATES' and d_year >= 1992 and d_year <= 1997 group by c_city, s_city, d_year order by d_year asc, revenue desc"
+        val Q9="select c_city, s_city, d_year, sum(lo_revenue) as revenue from widetable where (c_city='UNITED KI1' or c_city='UNITED KI5') and (s_city='UNITED KI1' or s_city='UNITED KI5') and d_year >= 1992 and d_year <= 1997 group by c_city, s_city, d_year order by d_year asc, revenue desc"
+        val Q10="select c_city, s_city, d_year, sum(lo_revenue) as revenue from widetable where (c_city='UNITED KI1' or c_city='UNITED KI5') and (s_city='UNITED KI1' or s_city='UNITED KI5') and d_yearmonth = 'Dec1997' group by c_city, s_city, d_year order by d_year asc, revenue desc"
         val Q11="select d_year, c_nation, sum(lo_revenue-lo_supplycost) as profit1 from widetable where c_region = 'AMERICA' and s_region = 'AMERICA'and (p_mfgr = 'MFGR#1' or p_mfgr ='MFGR#2') group by d_year, c_nation order by d_year, c_nation"
         val Q12="select d_year, s_nation, p_category, sum(lo_revenue-lo_supplycost) as profit1 from widetable where c_region = 'AMERICA' and s_region = 'AMERICA' and (d_year = 1997 or d_year = 1998) and (p_mfgr = 'MFGR#1' or p_mfgr = 'MFGR#2') group by d_year, s_nation, p_category order by d_year, s_nation, p_category"
         val Q13="select d_year, s_city, p_brand1, sum(lo_revenue-lo_supplycost) as profit1 from widetable where c_region = 'AMERICA' and s_nation = 'UNITED STATES' and (d_year = 1997 or d_year = 1998) and p_category = 'MFGR#14' group by d_year, s_city, p_brand1 order by d_year, s_city, p_brand1"
