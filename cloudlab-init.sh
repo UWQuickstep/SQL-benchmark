@@ -11,7 +11,7 @@ sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-3.7
 sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 20
 sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.9 20
 sudo apt-get install -y dstat
-sudo apt-get install -y tmux vim htop
+sudo apt-get install -y tmux vim htop curl
 
 (echo n; echo ; echo ; echo ; echo ; echo w) | sudo fdisk /dev/sdb
 sudo mkfs.ext4 /dev/sdb1
