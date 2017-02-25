@@ -6,11 +6,11 @@ import org.apache.spark.sql.Dataset
 import org.apache.spark.sql.functions._
 
 class Q01 extends TPCHQuery {
-  override def getName(): String {
+  override def getName(): String = {
     return "Q01"
   }
 
-  override def run(sparkContext: SparkContext, database: TPCHDatabase): Dataset {
+  override def run(sparkContext: SparkContext, database: TPCHDatabase): Dataset = {
     val sqlContex = new SQLContext(sparkContext);
     import sqlContext.implicits._
     import database._

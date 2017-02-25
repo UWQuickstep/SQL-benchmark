@@ -16,7 +16,7 @@ abstract class TPCHQuery {
 }
 
 object TPCHQuery {
-  def main(args: Array[String]) {
+  def main(args: Array[String]) = {
     val parser = new scopt.OptionParser[RunConfig]("spark-sql-tpch") {
       head("TPCH Benchmark for Spark SQL 2.1.0")
       opt[String]("d", "data_path").action { (x, c) => c.copy(dataPath = x) }
@@ -49,7 +49,7 @@ object TPCHQuery {
     runQueries(sparkContext, database, queries, repeat)
   }
 
-  def runQueries(sparkContext: SparkContext, db: TPCHDatabase, queries: List[Int], repeat: Int) {
+  def runQueries(sparkContext: SparkContext, db: TPCHDatabase, queries: List[Int], repeat: Int) = {
     for (queryID <- queries) {
       println("Query ${queryID}%02d")
       val query = Class.forName(f"main.scala.Q${queryID}%02d").newInstance.asInstanceOf[TPCHQuery]
@@ -62,5 +62,6 @@ object TPCHQuery {
         val elapsed_time_ms = (end - start) / scala.math.pow(10, 6)
         println("Time (ms): " + elapsed_time_ms)
       }
+    }
   }
 }
