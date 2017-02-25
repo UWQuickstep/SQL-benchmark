@@ -8,9 +8,10 @@ import org.apache.spark.sql.DataFrame
 //import org.apache.spark.sql.functions._
 
 class Q01 extends TPCHQuery {
-  override def run(sparkContext: SparkContext): DataFrame = {
+  override def run(sparkContext: SparkContext, db: TPCHDatabase): DataFrame = {
     val sqlContext = new SQLContext(sparkContext)
     import sqlContext.implicits._
+    import db._
 
     val query_01 = s"""
 select

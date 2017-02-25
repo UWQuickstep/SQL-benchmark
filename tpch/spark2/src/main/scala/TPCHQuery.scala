@@ -11,7 +11,7 @@ case class Settings (
 )
 
 abstract class TPCHQuery {
-  def run(sparkContext: SparkContext): DataFrame
+  def run(sparkContext: SparkContext, db: TPCHDatabase): DataFrame
 }
 
 object TPCHQuery {
@@ -58,7 +58,7 @@ object TPCHQuery {
 
       for (i <- List.range(0, repeat)) {
         val start = System.nanoTime()
-        val result = query.run(sparkContext)
+        val result = query.run(sparkContext, db)
         result.collect().foreach(println)
         val end = System.nanoTime()
         val elapsed_time_ms = (end - start) / scala.math.pow(10, 6)
