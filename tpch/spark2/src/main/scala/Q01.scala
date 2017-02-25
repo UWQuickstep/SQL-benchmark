@@ -11,10 +11,9 @@ class Q01 extends TPCHQuery {
     return "Q01"
   }
 
-  override def run(sparkContext: SparkContext, database: TPCHDatabase): DataFrame = {
+  override def run(sparkContext: SparkContext): DataFrame = {
     val sqlContext = new SQLContext(sparkContext);
     import sqlContext.implicits._
-    import database._
 
     val query_01 = s"""
 select

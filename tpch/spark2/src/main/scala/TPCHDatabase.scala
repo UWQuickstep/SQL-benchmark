@@ -88,7 +88,7 @@ case class Lineitem (
   l_comment       : String
 )
 
-class TPCHDatabase(sparkContext: SparkContext, tablesDirectory: String) {
+class TPCHDatabase(sparkContext: SparkContext, tablesDirectory: String) extends java.io.Serializable {
   val sqlContext = new org.apache.spark.sql.SQLContext(sparkContext)
   import sqlContext.implicits._
 

@@ -12,7 +12,7 @@ case class Settings (
 
 abstract class TPCHQuery {
   def getName(): String
-  def run(sparkContext: SparkContext, database: TPCHDatabase): DataFrame
+  def run(sparkContext: SparkContext): DataFrame
 }
 
 object TPCHQuery {
@@ -59,9 +59,9 @@ object TPCHQuery {
 
       for (i <- List.range(0, repeat)) {
         val start = System.nanoTime()
-        val result = query.run(sparkContext, db)
+        val result = query.run(sparkContext)
+        result.collect().foreach(println)
         val end = System.nanoTime()
-        result.show(result.count().toInt, false)
         val elapsed_time_ms = (end - start) / scala.math.pow(10, 6)
         println("Time (ms): " + elapsed_time_ms)
       }
