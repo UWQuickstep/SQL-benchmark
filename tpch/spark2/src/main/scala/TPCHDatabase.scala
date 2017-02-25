@@ -80,7 +80,7 @@ case class Lineitem (
   l_tax           : Double,
   l_returnflag    : String,
   l_linestatus    : String,
-  l_shipsdate     : String,
+  l_shipdate      : String,
   l_commitdate    : String,
   l_receiptdate   : String,
   l_shipinstruct  : String,
