@@ -1,6 +1,7 @@
 package main.scala
 
 import org.apache.spark.SparkContext
+import org.apache.spark.sql._
 
 case class Region (
   r_regionkey  : Int,
@@ -79,7 +80,7 @@ case class Lineitem (
   l_tax           : Double,
   l_returnflag    : String,
   l_linestatus    : String,
-  l_shipstring    : String,
+  l_shipsdate     : String,
   l_commitdate    : String,
   l_receiptdate   : String,
   l_shipinstruct  : String,
@@ -223,9 +224,7 @@ class TPCHDatabase(sparkContext: SparkContext, tablesDirectory: String) {
       row.getString(12),
       row.getString(13),
       row.getString(14),
-      row.getString(15),
-      row.getString(16),
-      row.getString(17)
+      row.getString(15)
     )
   }
 }
