@@ -5,19 +5,19 @@ import org.apache.spark.SparkConf
 import org.apache.spark.sql._
 
 case class Settings (
-  dataPath: String,
+  dataPath : String,
   queries  : List[Int],
   repeat   : Int
 )
 
 abstract class TPCHQuery {
   def getName(): String
-  def run(sparkContext: SparkContext, database: TPCHDatabase): Dataset
+  def run(sparkContext: SparkContext, database: TPCHDatabase): DataFrame
 }
 
 object TPCHQuery {
   def main(args: Array[String]) = {
-    val parser = new scopt.OptionParser[RunConfig]("spark-sql-tpch") {
+    val parser = new scopt.OptionParser[Settings]("spark-sql-tpch") {
       head("TPCH Benchmark for Spark SQL 2.1.0")
       opt[String]("d", "data_path").action { (x, c) => c.copy(dataPath = x) }
         .text("Path to the .tbl files")

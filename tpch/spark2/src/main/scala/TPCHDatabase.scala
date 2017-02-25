@@ -88,7 +88,7 @@ case class Lineitem (
 )
 
 class TPCHDatabase(sparkContext: SparkContext, tablesDirectory: String) {
-  val sqlContext = new org.apache.spark.sql.SQLContext(sc)
+  val sqlContext = new org.apache.spark.sql.SQLContext(sparkContext)
   import sqlContext.implicits._
 
   val region_tbl   = tablesDirectory + "/" + "region.tbl"
@@ -101,14 +101,14 @@ class TPCHDatabase(sparkContext: SparkContext, tablesDirectory: String) {
   val lineitem_tbl = tablesDirectory + "/" + "lineitem.tbl"
 
   val tables = Map(
-    "region"   -> sc.read.csv(region_tbl, sep='|', header=false).as[Region],
-    "nation"   -> sc.read.csv(nation_tbl, sep='|', header=false).as[Nation],
-    "supplier" -> sc.read.csv(supplier_tbl, sep='|', header=false).as[Supplier],
-    "customer" -> sc.read.csv(customer_tbl, sep='|', header=false).as[Customer],
-    "part"     -> sc.read.csv(part_tbl, sep='|', header=false).as[Part],
-    "partsupp" -> sc.read.csv(partsupp_tbl, sep='|', header=false).as[Partsupp],
-    "orders"   -> sc.read.csv(orders_tbl, sep='|', header=false).as[Orders],
-    "lineitem" -> sc.read.csv(lineitem_tbl, sep='|', header=false).as[Lineitem]
+    "region"   -> sqlContext.read.csv(region_tbl, sep='|', header=false).as[Region],
+    "nation"   -> sqlContext.read.csv(nation_tbl, sep='|', header=false).as[Nation],
+    "supplier" -> sqlContext.read.csv(supplier_tbl, sep='|', header=false).as[Supplier],
+    "customer" -> sqlContext.read.csv(customer_tbl, sep='|', header=false).as[Customer],
+    "part"     -> sqlContext.read.csv(part_tbl, sep='|', header=false).as[Part],
+    "partsupp" -> sqlContext.read.csv(partsupp_tbl, sep='|', header=false).as[Partsupp],
+    "orders"   -> sqlContext.read.csv(orders_tbl, sep='|', header=false).as[Orders],
+    "lineitem" -> sqlContext.read.csv(lineitem_tbl, sep='|', header=false).as[Lineitem]
   )
 
   val region   = tables("region")
