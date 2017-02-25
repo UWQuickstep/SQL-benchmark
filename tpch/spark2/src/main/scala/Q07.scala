@@ -11,10 +11,10 @@ class Q07 extends TPCHQuery {
 
     val query_07 = s"""
 select
-	supp_nation,
-	cust_nation,
-	l_year,
-	sum(volume) as revenue
+	shipping.supp_nation,
+	shipping.cust_nation,
+	shipping.l_year,
+	sum(shipping.volume) as revenue
 from
 	(
 		select
@@ -42,13 +42,13 @@ from
 			and l_shipdate between date '1995-01-01' and date '1996-12-31'
 	) shipping
 group by
-	supp_nation,
-	cust_nation,
-	l_year
+	shipping.supp_nation,
+	shipping.cust_nation,
+	shipping.l_year
 order by
-	supp_nation,
-	cust_nation,
-	l_year
+	shipping.supp_nation,
+	shipping.cust_nation,
+	shipping.l_year
 """
     return sqlContext.sql(query_07)
   }

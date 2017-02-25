@@ -11,11 +11,11 @@ class Q08 extends TPCHQuery {
 
     val query_08 = s"""
 select
-	o_year,
+	all_nations.o_year,
 	sum(case
-		when nation = 'BRAZIL' then volume
+		when all_nations.nation = 'BRAZIL' then all_nations.volume
 		else 0
-	end) / sum(volume) as mkt_share
+	end) / sum(all_nations.volume) as mkt_share
 from
 	(
 		select
@@ -44,9 +44,9 @@ from
 			and p_type = 'ECONOMY ANODIZED STEEL'
 	) all_nations
 group by
-	o_year
+	all_nations.o_year
 order by
-	o_year
+	all_nations.o_year
 """
     return sqlContext.sql(query_08)
   }
