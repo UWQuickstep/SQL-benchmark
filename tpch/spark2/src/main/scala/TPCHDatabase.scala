@@ -129,7 +129,7 @@ class TPCHDatabase(sparkContext: SparkContext, tablesDirectory: String) extends 
 
   def parseRegion(row: Row): Region = {
     return Region(
-      row.getInt(0),
+      row.getString(0).toInt,
       row.getString(1),
       row.getString(2)
     )
@@ -137,33 +137,33 @@ class TPCHDatabase(sparkContext: SparkContext, tablesDirectory: String) extends 
 
   def parseNation(row: Row): Nation = {
     return Nation(
-      row.getInt(0),
+      row.getString(0).toInt,
       row.getString(1),
-      row.getInt(2),
+      row.getString(2).toInt,
       row.getString(3)
     )
   }
 
   def parseSupplier(row: Row): Supplier = {
     return Supplier(
-      row.getInt(0),
+      row.getString(0).toInt,
       row.getString(1),
       row.getString(2),
-      row.getInt(3),
+      row.getString(3).toInt,
       row.getString(4),
-      row.getDouble(5),
+      row.getString(5).toDouble,
       row.getString(6)
     )
   }
 
   def parseCustomer(row: Row): Customer = {
     return Customer(
-      row.getInt(0),
+      row.getString(0).toInt,
       row.getString(1),
       row.getString(2),
-      row.getInt(3),
+      row.getString(3).toInt,
       row.getString(4),
-      row.getDouble(5),
+      row.getString(5).toDouble,
       row.getString(6),
       row.getString(7)
     )
@@ -171,52 +171,52 @@ class TPCHDatabase(sparkContext: SparkContext, tablesDirectory: String) extends 
 
   def parsePart(row: Row): Part = {
     return Part(
-      row.getInt(0),
+      row.getString(0).toInt,
       row.getString(1),
       row.getString(2),
       row.getString(3),
       row.getString(4),
-      row.getInt(5),
+      row.getString(5).toInt,
       row.getString(6),
-      row.getDouble(7),
+      row.getString(7).toDouble,
       row.getString(8)
     )
   }
 
   def parsePartsupp(row: Row): Partsupp = {
     return Partsupp(
-      row.getInt(0),
-      row.getInt(1),
-      row.getInt(2),
-      row.getDouble(3),
+      row.getString(0).toInt,
+      row.getString(1).toInt,
+      row.getString(2).toInt,
+      row.getString(3).toDouble,
       row.getString(4)
     )
   }
 
   def parseOrders(row: Row): Orders = {
     return Orders(
-      row.getInt(0),
-      row.getInt(1),
+      row.getString(0).toInt,
+      row.getString(1).toInt,
       row.getString(2),
-      row.getDouble(3),
+      row.getString(3).toDouble,
       row.getString(4),
       row.getString(5),
       row.getString(6),
-      row.getInt(7),
+      row.getString(7).toInt,
       row.getString(8)
     )
   }
 
   def parseLineitem(row: Row): Lineitem = {
     return Lineitem(
-      row.getInt(0),
-      row.getInt(1),
-      row.getInt(2),
-      row.getInt(3),
-      row.getDouble(4),
-      row.getDouble(5),
-      row.getDouble(6),
-      row.getDouble(7),
+      row.getString(0).toInt,
+      row.getString(1).toInt,
+      row.getString(2).toInt,
+      row.getString(3).toInt,
+      row.getString(4).toDouble,
+      row.getString(5).toDouble,
+      row.getString(6).toDouble,
+      row.getString(7).toDouble,
       row.getString(8),
       row.getString(9),
       row.getString(10),

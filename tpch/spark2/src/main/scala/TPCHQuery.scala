@@ -54,7 +54,7 @@ object TPCHQuery {
 
   def runQueries(sparkContext: SparkContext, db: TPCHDatabase, queries: Seq[Int], repeat: Int) = {
     for (queryID <- queries) {
-      println("Query ${queryID}%02d")
+      println(f"QUERY ${queryID}%02d")
       val query = Class.forName(f"main.scala.Q${queryID}%02d").newInstance.asInstanceOf[TPCHQuery]
 
       for (i <- List.range(0, repeat)) {
