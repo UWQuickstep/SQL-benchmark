@@ -101,7 +101,7 @@ class TPCHDatabase(sparkContext: SparkContext, tablesDirectory: String) {
   val lineitem_tbl = tablesDirectory + "/" + "lineitem.tbl"
 
   val tables = Map(
-    "region"   -> sqlContext.read.csv(region_tbl, sep='|', header=false).as[Region],
+    "region"   -> sparkContext.textFile(region_t)
     "nation"   -> sqlContext.read.csv(nation_tbl, sep='|', header=false).as[Nation],
     "supplier" -> sqlContext.read.csv(supplier_tbl, sep='|', header=false).as[Supplier],
     "customer" -> sqlContext.read.csv(customer_tbl, sep='|', header=false).as[Customer],
@@ -120,8 +120,111 @@ class TPCHDatabase(sparkContext: SparkContext, tablesDirectory: String) {
   val orders   = tables("orders")
   val lineitem = tables("lineitem")
 
+
   tables.foreach {
     case (table_name, table_ds) => table_ds.createOrReplaceTempView(table_name)
   }
 
+  def parseRegion(row: Row): Region = {
+    return Region(
+      row.getInt(0),
+      row.getString(1),
+      row.getString(2)
+    )
+  }
+
+  def parseNation(row: Row): Nation = {
+    return Nation(
+      row.getInt(0),
+      row.getString(1),
+      row.getInt(2),
+      row.getString(3)
+    )
+  }
+
+  def parseSupplier(row: Row): Supplier = {
+    return Supplier(
+      row.getInt(0),
+      row.getString(1),
+      row.getString(2),
+      row.getInt(3),
+      row.getString(4),
+      row.getDouble(5),
+      row.getString(6)
+    )
+  }
+
+  def parseCustomer(row: Row): Customer = {
+    return Customer(
+      row.getInt(0),
+      row.getString(1),
+      row.getString(2),
+      row.getInt(3),
+      row.getString(4),
+      row.getDouble(5),
+      row.getString(6),
+      row.getString(7)
+    )
+  }
+
+  def parsePart(row: Row): Part = {
+    return Part(
+      row.getInt(0),
+      row.getString(1),
+      row.getString(2),
+      row.getString(3),
+      row.getString(4),
+      row.getInt(5),
+      row.getString(6),
+      row.getDouble(7),
+      row.getString(8)
+    )
+  }
+
+  def parsePartsupp(row: Row): Partsupp = {
+    return Partsupp(
+      row.getInt(0),
+      row.getInt(1),
+      row.getInt(2),
+      row.getDouble(3),
+      row.getString(4)
+    )
+  }
+
+  def parseOrders(row: Row): Orders = {
+    return Orders(
+      row.getInt(0),
+      row.getInt(1),
+      row.getString(2),
+      row.getDouble(3),
+      row.getString(4),
+      row.getString(5),
+      row.getString(6),
+      row.getInt(7),
+      row.getString(8)
+    )
+  }
+
+  def parseLineitem(row: Row): Lineitem = {
+    return Lineitem(
+      row.getInt(0),
+      row.getInt(1),
+      row.getInt(2),
+      row.getInt(3),
+      row.getDouble(4),
+      row.getDouble(5),
+      row.getDouble(6),
+      row.getDouble(7),
+      row.getString(8),
+      row.getString(9),
+      row.getString(10),
+      row.getString(11),
+      row.getString(12),
+      row.getString(13),
+      row.getString(14),
+      row.getString(15),
+      row.getString(16),
+      row.getString(17)
+    )
+  }
 }

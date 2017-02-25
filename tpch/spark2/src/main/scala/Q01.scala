@@ -12,7 +12,7 @@ class Q01 extends TPCHQuery {
   }
 
   override def run(sparkContext: SparkContext, database: TPCHDatabase): DataFrame = {
-    val sqlContex = new SQLContext(sparkContext);
+    val sqlContext = new SQLContext(sparkContext);
     import sqlContext.implicits._
     import database._
 
