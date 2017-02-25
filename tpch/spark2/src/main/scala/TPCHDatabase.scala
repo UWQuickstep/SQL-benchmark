@@ -100,30 +100,31 @@ class TPCHDatabase(sparkContext: SparkContext, tablesDirectory: String) {
   val orders_tbl   = tablesDirectory + "/" + "orders.tbl"
   val lineitem_tbl = tablesDirectory + "/" + "lineitem.tbl"
 
-  val tables = Map(
-    "region"   -> sparkContext.textFile(region_t)
-    "nation"   -> sqlContext.read.csv(nation_tbl, sep='|', header=false).as[Nation],
-    "supplier" -> sqlContext.read.csv(supplier_tbl, sep='|', header=false).as[Supplier],
-    "customer" -> sqlContext.read.csv(customer_tbl, sep='|', header=false).as[Customer],
-    "part"     -> sqlContext.read.csv(part_tbl, sep='|', header=false).as[Part],
-    "partsupp" -> sqlContext.read.csv(partsupp_tbl, sep='|', header=false).as[Partsupp],
-    "orders"   -> sqlContext.read.csv(orders_tbl, sep='|', header=false).as[Orders],
-    "lineitem" -> sqlContext.read.csv(lineitem_tbl, sep='|', header=false).as[Lineitem]
-  )
+  val region   : Dataset[Region] = sqlContext.read.option("sep", ",").option("header", false)
+    .csv(region_tbl).map(row => parseRegion(row))
+  val nation   : Dataset[Nation] = sqlContext.read.option("sep", ",").option("header", false)
+    .csv(nation_tbl).map(row => parseNation(row))
+  val supplier : Dataset[Supplier] = sqlContext.read.option("sep", ",").option("header", false)
+    .csv(supplier_tbl).map(row => parseSupplier(row))
+  val customer : Dataset[Customer] = sqlContext.read.option("sep", ",").option("header", false)
+    .csv(customer_tbl).map(row => parseCustomer(row))
+  val part     : Dataset[Part] = sqlContext.read.option("sep", ",").option("header", false)
+    .csv(part_tbl).map(row => parsePart(row))
+  val partsupp : Dataset[Partsupp] = sqlContext.read.option("sep", ",").option("header", false)
+    .csv(partsupp_tbl).map(row => parsePartsupp(row))
+  val orders   : Dataset[Orders] = sqlContext.read.option("sep", ",").option("header", false)
+    .csv(orders_tbl).map(row => parseOrders(row))
+  val lineitem : Dataset[Lineitem] = sqlContext.read.option("sep", ",").option("header", false)
+    .csv(lineitem_tbl).map(row => parseLineitem(row))
 
-  val region   = tables("region")
-  val nation   = tables("nation")
-  val supplier = tables("supplier")
-  val customer = tables("customer")
-  val part     = tables("part")
-  val partsupp = tables("partsupp")
-  val orders   = tables("orders")
-  val lineitem = tables("lineitem")
-
-
-  tables.foreach {
-    case (table_name, table_ds) => table_ds.createOrReplaceTempView(table_name)
-  }
+  region.createOrReplaceTempView("region")
+  nation.createOrReplaceTempView("nation")
+  supplier.createOrReplaceTempView("supplier")
+  customer.createOrReplaceTempView("customer")
+  part.createOrReplaceTempView("part")
+  partsupp.createOrReplaceTempView("partsupp")
+  orders.createOrReplaceTempView("orders")
+  lineitem.createOrReplaceTempView("lineitem")
 
   def parseRegion(row: Row): Region = {
     return Region(
