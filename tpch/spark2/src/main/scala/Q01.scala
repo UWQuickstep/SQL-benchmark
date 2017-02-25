@@ -2,17 +2,14 @@ package main.scala
 
 import org.apache.spark.SparkContext
 import org.apache.spark.sql.SQLContext
-import org.apache.spark.sql.Dataset
 import org.apache.spark.sql.DataFrame
-import org.apache.spark.sql.functions._
+
+//import org.apache.spark.sql.Dataset
+//import org.apache.spark.sql.functions._
 
 class Q01 extends TPCHQuery {
-  override def getName(): String = {
-    return "Q01"
-  }
-
   override def run(sparkContext: SparkContext): DataFrame = {
-    val sqlContext = new SQLContext(sparkContext);
+    val sqlContext = new SQLContext(sparkContext)
     import sqlContext.implicits._
 
     val query_01 = s"""

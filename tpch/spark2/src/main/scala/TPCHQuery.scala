@@ -6,12 +6,11 @@ import org.apache.spark.sql._
 
 case class Settings (
   dataPath : String    = ".",
-  queries  : Seq[Int] = Seq(),
+  queries  : Seq[Int]  = Seq(),
   repeat   : Int       = 1
 )
 
 abstract class TPCHQuery {
-  def getName(): String
   def run(sparkContext: SparkContext): DataFrame
 }
 
