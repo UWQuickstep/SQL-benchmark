@@ -118,6 +118,15 @@ class TPCHDatabase(sparkContext: SparkContext, tablesDirectory: String) extends 
   val lineitem : Dataset[Lineitem] = sqlContext.read.option("sep", "|").option("header", false)
     .csv(lineitem_tbl).map(row => parseLineitem(row))
 
+  region.cache()
+  nation.cache()
+  supplier.cache()
+  customer.cache()
+  part.cache()
+  partsupp.cache()
+  orders.cache()
+  lineitem.cache()
+
   region.createOrReplaceTempView("region")
   nation.createOrReplaceTempView("nation")
   supplier.createOrReplaceTempView("supplier")
