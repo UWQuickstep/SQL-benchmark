@@ -24,7 +24,7 @@ from
 				and o_comment not like '%special%requests%'
 		group by
 			c_custkey
-	) as c_orders (c_custkey, c_count)
+	) c_orders (c_custkey, c_count)
 group by
 	c_count
 order by

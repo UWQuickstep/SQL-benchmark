@@ -40,7 +40,7 @@ from
 				or (n1.n_name = 'GERMANY' and n2.n_name = 'FRANCE')
 			)
 			and l_shipdate between date '1995-01-01' and date '1996-12-31'
-	) as shipping
+	) shipping
 group by
 	supp_nation,
 	cust_nation,

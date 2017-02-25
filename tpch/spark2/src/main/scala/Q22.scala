@@ -42,7 +42,7 @@ from
 				where
 					o_custkey = c_custkey
 			)
-	) as custsale
+	) custsale
 group by
 	cntrycode
 order by
