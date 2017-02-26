@@ -17,12 +17,12 @@ select
 from
 	(
 		select
-			substring(c_phone from 1 for 2) as cntrycode,
+			substring(c_phone, 0, 2) as cntrycode,
 			c_acctbal
 		from
 			customer
 		where
-			substring(c_phone from 1 for 2) in
+			substring(c_phone, 0, 2) in
 				('13', '31', '23', '29', '30', '18', '17')
 			and c_acctbal > (
 				select
@@ -31,7 +31,7 @@ from
 					customer
 				where
 					c_acctbal > 0.00
-					and substring(c_phone from 1 for 2) in
+					and substring(c_phone, 0, 2) in
 						('13', '31', '23', '29', '30', '18', '17')
 			)
 			and not exists (
