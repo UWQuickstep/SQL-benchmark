@@ -11,14 +11,14 @@ class Q09 extends TPCHQuery {
 
     val query_09 = s"""
 select
-	profit.nation,
-	profit.o_year,
-	sum(profit.amount) as sum_profit
+	nation,
+	o_year,
+	sum(amount) as sum_profit
 from
 	(
 		select
 			n_name as nation,
-			extract(year from o_orderdate) as o_year,
+			year(o_orderdate) as o_year,
 			l_extendedprice * (1 - l_discount) - ps_supplycost * l_quantity as amount
 		from
 			part,
@@ -35,13 +35,13 @@ from
 			and o_orderkey = l_orderkey
 			and s_nationkey = n_nationkey
 			and p_name like '%green%'
-	) profit
+	) as profit
 group by
-	profit.nation,
-	profit.o_year
+	nation,
+	o_year
 order by
-	profit.nation,
-	profit.o_year desc
+	nation,
+	o_year desc;
 """
     return sqlContext.sql(query_09)
   }
