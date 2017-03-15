@@ -1,3 +1,4 @@
+#!/bin/bash
 # Load user-defined environment variables
 
 echo "Loading settings from $1"

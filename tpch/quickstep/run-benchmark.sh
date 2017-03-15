@@ -1,3 +1,4 @@
+#!/bin/bash
 # Load user-defined environment variables
 
 set -e
