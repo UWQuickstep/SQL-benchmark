@@ -16,7 +16,7 @@ function load_data {
   if [ -d $TPCH_DATA_PATH ] ; then
     rm -rf $QS_STORAGE
     QSEXE="$QS $QS_ARGS_BASE $QS_ARGS_STORAGE $QS_ARGS_NUMA_LOAD"
-    
+
     # Use quickstep to generate the catalog file in a new folder.
     $QSEXE -initialize_db=true < $CREATE_SQL
 
@@ -50,14 +50,14 @@ function load_data {
         TBL="lineitem"
       fi
 
-      echo Loading $TBL from file: $tblfile; 
+      echo Loading $TBL from file: $tblfile;
       if ! echo "COPY $TBL FROM '$tblfile' WITH (DELIMITER '|');" | $QSEXE;
       then
-        echo "Quickstep load failed."; 
+        echo "Quickstep load failed.";
         exit 1;
       fi
 
-      let COUNTER=COUNTER+1 
+      let COUNTER=COUNTER+1
     done
     echo Done loading. Loaded $COUNTER files.
     $QSEXE <<< "\analyze"
@@ -93,7 +93,7 @@ function run_queries {
     # Run each query a variable number of times.
     for i in `seq 1 $TOTALRUNS`;
     do
-      cat $query.sql >> tmp.sql 
+      cat $query.sql >> tmp.sql
     done
     timeout 15m $QSEXE < tmp.sql
     rc=$?

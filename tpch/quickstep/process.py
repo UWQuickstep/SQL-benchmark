@@ -23,7 +23,7 @@ def process_file(fname):
   except Exception as e:
     print "Failed to open file: " + e
     return -1
-  
+
   current_query = 0
   query_avg = {}
   counts = []
@@ -39,13 +39,13 @@ def process_file(fname):
     query_avg[current_query] = avg(counts[1:-1])
   else:
     query_avg[current_query] = -1
-  
+
   for k in query_avg:
     #print "{},{}".format(k, query_avg[k])
     print "{}".format(query_avg[k])
 
 
-  
+
 
 
 def main(args):

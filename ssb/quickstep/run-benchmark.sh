@@ -14,7 +14,7 @@ function load_data {
   if [ -d $SSB_DATA_PATH ] ; then
     rm -rf $QS_STORAGE
     QSEXE="$QS $QS_ARGS_BASE $QS_ARGS_STORAGE $QS_ARGS_NUMA_LOAD"
-    
+
     # Use quickstep to generate the catalog file in a new folder.
     $QSEXE -initialize_db=true < $CREATE_SQL
 
@@ -41,11 +41,11 @@ function load_data {
 
       if ! $QSEXE <<< "COPY $TBL FROM '$tblfile' WITH (DELIMITER '|');" ;
       then
-        echo "Quickstep load failed."; 
+        echo "Quickstep load failed.";
         exit 1;
       fi
 
-      let COUNTER=COUNTER+1 
+      let COUNTER=COUNTER+1
     done
     echo "Done loading. Loaded $COUNTER files."
 
@@ -72,8 +72,8 @@ function run_queries {
     # run each query 3 times.
     for i in `seq 1 5`;
     do
-      cat $query.sql >> tmp.sql 
-    done    
+      cat $query.sql >> tmp.sql
+    done
     if ! $QSEXE < tmp.sql ;
     then
       echo "Quickstep failed on query $query, exiting."
@@ -84,13 +84,13 @@ function run_queries {
 }
 
 function analyze_tables {
-  # Runs the analyze command on quickstep. 
+  # Runs the analyze command on quickstep.
   QSEXE="$QS $QS_ARGS_BASE $QS_ARGS_NUMA_RUN $QS_ARGS_STORAGE"
   rm tmp.sql &>/dev/null
   touch tmp.sql
   echo "\analyze" >> tmp.sql
   if ! $QSEXE < tmp.sql ;
-  then 
+  then
     echo "Quickstep failed on analyze, exiting."
     exit 1
   fi
