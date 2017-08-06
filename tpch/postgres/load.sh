@@ -13,7 +13,7 @@ table_list=(
     region
 )
 
-echo "Creating SSB tables..."
+echo "Creating TPC-H tables..."
 $POSTGRES_EXEC -d $POSTGRES_DB_NAME -f ./create.sql
 echo "Creating database is done."
 
