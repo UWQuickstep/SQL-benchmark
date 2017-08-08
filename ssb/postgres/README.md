@@ -2,36 +2,42 @@ This directory contains the scripts that are used to run the Star Schema Benchma
 
 # SSB on PostgreSQL
 
-## Installing PostgreSQL 9.6 Beta 1
+## Installing PostgreSQL 9.6
 
 ```bash
-# Download the source code.
-wget https://ftp.postgresql.org/pub/source/v9.6beta1/postgresql-9.6beta1.tar.gz
-# Untar it.
-tar xzvf postgresql-9.6beta1.tar.gz
-# Start to build it.
-cd postgresql-9.6beta1
-./configure --prefix=/fastdisk/postgres-beta
-make
-make install
+# Create the Apt repository package list.
+sudo echo "deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main" > /etc/apt/sources.list.d/pgdg.list
+# Import the repository signing key, and update the package list.
+wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | \
+  sudo apt-key add -
+sudo apt-get update
+# Install the package.
+sudo apt-get install postgresql-9.6
+```
+
+## Setup Environment Variables
+```bash
+# It is recommended to add to ~/.bashrc as well.
+export PATH=/usr/lib/postgresql/9.6/bin:$PATH
+export PG_DATADIR=/PATH/TO/PG/DATADIR
 ```
 
 ## Initiating PostgreSQL
 ```bash
 # Initialize the database.
-/fastdisk/postgres-beta/bin/pg_ctl -D /fastdisk/postgres-beta-data initdb
+pg_ctl initdb -D $PG_DATADIR
 # Start the server.
-/fastdisk/postgres-beta/bin/pg_ctl -D /fastdisk/postgres-beta-data start -l /fastdisk/postgres.log
+pg_ctl start -D $PG_DATADIR -l $PG_DATADIR/postgres.log
 # Create the database.
-/fastdisk/postgres-beta/bin/createdb ssb100
+createdb ssb100
 ```
 
 ## Configure PostgreSQL
 ```bash
 # Backup the configuration file.
-mv /fastdisk/postgres-beta-data/postgresql.conf /fastdisk/postgres-beta-data/postgresql.conf.backup
+mv $PG_DATADIR/postgresql.conf $PG_DATADIR/postgresql.conf.backup
 # Copy the custom configuration file.
-cp /PATH/TO/REPO/ssb/postgres/postgresq.conf /fastdisk/postgres-beta-data/
+cp /PATH/TO/REPO/ssb/postgres/postgresql.conf $PG_DATADIR
 # Restart the database.
-/fastdisk/postgres-beta/bin/pg_ctl -D /fastdisk/postgres-beta-data restart
+pg_ctl restart -D $PG_DATADIR
 ```
