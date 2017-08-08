@@ -1,13 +1,13 @@
-This directory contains the scripts that are used to run the Star Schema Benchmark on PostgreSQL
+This directory contains the scripts that are used to run the TPC-H Benchmark on PostgreSQL
 
-# SSB on PostgreSQL
+# TPC-H on PostgreSQL
 
 ## Installing PostgreSQL 9.6
 
 ```bash
 # Create the Apt repository package list.
 echo "deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main" > pgdg.list
-sudo mv pgdg.list /etc/apt/sources.list.d
+sudo pgdg.list /etc/apt/sources.list.d
 # Import the repository signing key, and update the package list.
 wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | \
   sudo apt-key add -
@@ -30,7 +30,7 @@ pg_ctl initdb -D $PG_DATADIR
 # Start the server.
 pg_ctl start -D $PG_DATADIR -l $PG_DATADIR/postgres.log
 # Create the database.
-createdb ssb100
+createdb tpch100
 # Create Role and Database
 sudo -u postgres createuser owning_user
 sudo -u postgres createdb -O owning_user tpch100
@@ -41,7 +41,7 @@ sudo -u postgres createdb -O owning_user tpch100
 # Backup the configuration file.
 mv $PG_DATADIR/postgresql.conf $PG_DATADIR/postgresql.conf.backup
 # Copy the custom configuration file.
-cp /PATH/TO/REPO/ssb/postgres/postgresql.conf $PG_DATADIR
+cp /PATH/TO/REPO/tpch/postgres/postgresql.conf $PG_DATADIR
 # Restart the database.
 pg_ctl restart -D $PG_DATADIR
 ```
