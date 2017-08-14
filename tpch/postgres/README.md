@@ -30,10 +30,10 @@ pg_ctl initdb -D $PG_DATADIR
 # Start the server.
 pg_ctl start -D $PG_DATADIR -l $PG_DATADIR/postgres.log
 # Create the database.
-createdb tpch100
+createdb tpch-100
 # Create Role and Database
 sudo -u postgres createuser owning_user
-sudo -u postgres createdb -O owning_user tpch100
+sudo -u postgres createdb -O owning_user tpch-100
 ```
 
 ## Configure PostgreSQL
