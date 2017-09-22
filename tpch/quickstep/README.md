@@ -1,4 +1,4 @@
-# SSB on QuickStep
+# TPC-H on QuickStep
 This directory contains the scripts that are used to run the TPCH on Quickstep.
 
 ## Usage
@@ -33,7 +33,7 @@ QS_ARGS_NUMA_LOAD="-num_workers=10 -worker_affinities=0,4,8,12,16,20,24,28,32,36
 # to the number of cores on you system.
 QS_ARGS_NUMA_RUN="-num_workers=40 -worker_affinities=0,4,8,12,16,20,24,28,32,36,1,5,9,13,17,21,25,29,33,37,2,6,10,14,18,22,26,30,34,38,3,7,11,15,19,23,27,31,35,39"
 
-# This is the script to use to create the SSB tables. Probably doesn't need to be modified
+# This is the script to use to create the TPC-H tables. Probably doesn't need to be modified
 # unless you are testing different block formats.
 CREATE_SQL="create.sql"
 
@@ -44,8 +44,8 @@ LOAD_DATA=true
 
 # Paths to tbl files for bulk loading. Probably to your table generate or subfolder.
 # This path must be set if you are loading data. Table file come from the standard
-# SSB data generator which can be found on github.
-SSB_DATA_PATH=/scratch/benchmark-data/tpch
+# TPCH data generator which can be found on github.
+TPCH_DATA_PATH=/scratch/benchmark-data/tpch
 
 # Where Quickstep will write Storage Blocks to.
 QS_STORAGE=store10

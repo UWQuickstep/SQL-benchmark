@@ -12,7 +12,7 @@ grep -v ^# $1
 QS_ARGS_STORAGE="-storage_path="$QS_STORAGE
 
 function load_data {
-  # Creates a fresh load of the ssb data.
+  # Creates a fresh load of the tpc-h data.
   if [ -d $TPCH_DATA_PATH ] ; then
     rm -rf $QS_STORAGE
     QSEXE="$QS $QS_ARGS_BASE $QS_ARGS_STORAGE $QS_ARGS_NUMA_LOAD"
@@ -68,13 +68,13 @@ function load_data {
     eval $DBSIZE
 
   else
-    echo "SSB data folder $SSB_DATA_PATH not found, quitting"
+    echo "TPC-H data folder $TPCH_DATA_PATH not found, quitting"
     exit
   fi
 }
 
 function run_queries {
-  # Runs each SSB query several times.
+  # Runs each TPC-H query several times.
   QSEXE="$QS $QS_ARGS_BASE $QS_ARGS_NUMA_RUN $QS_ARGS_STORAGE"
   TOTALRUNS=5
   queries=( 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 )
