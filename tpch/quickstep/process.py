@@ -41,17 +41,11 @@ def process_file(fname):
     query_avg[current_query] = -1
 
   for k in query_avg:
-    #print "{},{}".format(k, query_avg[k])
-    print "{}".format(query_avg[k])
-
-
-
-
+    print "{}".format(round(query_avg[k], 2))
 
 def main(args):
   for fname in args[1:]:
     process_file(fname)
-
 
 if __name__ == "__main__":
   main(sys.argv)
