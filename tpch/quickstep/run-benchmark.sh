@@ -85,6 +85,9 @@ function run_queries {
   fi
   echo $QSEXE
   for query in ${queries[@]} ; do
+#    echo 3 | sudo tee /proc/sys/vm/drop_caches
+    sudo free && sync && echo 3 | sudo tee /proc/sys/vm/drop_caches && free
+    echo "Dropped\n"
     echo "Query $query.sql"
     if [ -f tmp.sql ] ; then
       rm tmp.sql &>/dev/null
@@ -95,7 +98,7 @@ function run_queries {
     do
       cat $query.sql >> tmp.sql
     done
-    timeout 15m $QSEXE < tmp.sql
+    timeout 150m $QSEXE < tmp.sql
     rc=$?
     if [ $rc = 124 ] ;
     then
