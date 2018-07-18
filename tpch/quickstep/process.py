@@ -30,18 +30,20 @@ def process_file(fname):
   for match in re.findall(patt, contents):
     if match[0]:
       if current_query != 0:
-        query_avg[current_query] = avg(counts[1:-1])
+        counts.sort()
+        query_avg[current_query] = avg(counts[:3])
       counts = []
       current_query = int(match[0])
     else:
       counts.append(float(match[1]))
   if len(counts) > 0:
-    query_avg[current_query] = avg(counts[1:-1])
+    counts.sort()
+    query_avg[current_query] = avg(counts[:3])
   else:
     query_avg[current_query] = -1
 
   for k in query_avg:
-    print "{}".format(round(query_avg[k], 2))
+    print "{}".format(round(query_avg[k], 1))
 
 def main(args):
   for fname in args[1:]:
