@@ -1,0 +1,569 @@
+Loading settings from tpch-cfg/bs-128kb/20threads-nopipe.cfg
+QS=/fastdisk/incubator-quickstep/build-pipeline-storage-opt-128kb/quickstep_cli_shell
+
+QS_ARGS_BASE="-printing_enabled=false -use_filter_joins=false -show_all_nodes=false -scheduling_strategy=3 -intra_pipeline_scheduling_strategy=1 -num_workers=20 -worker_affinities=0,1,2,3,4,5,6,7,8,9,20,21,22,23,24,25,26,27,28,29 -fuse_pipelines=false"
+
+QS_ARGS_NUMA_LOAD=""
+
+QS_ARGS_NUMA_RUN="-preload_buffer_pool=false"
+
+CREATE_SQL="create-ccs.sql"
+
+LOAD_DATA=false
+
+TPCH_DATA_PATH=/slowdisk/raw-data/tpch-sf50
+
+QS_STORAGE=/fastdisk/qs-data/tpch-sf50-colstore-128kb
+
+QUERIES="ALL"
+/fastdisk/incubator-quickstep/build-pipeline-storage-opt-128kb/quickstep_cli_shell -printing_enabled=false -use_filter_joins=false -show_all_nodes=false -scheduling_strategy=3 -intra_pipeline_scheduling_strategy=1 -num_workers=20 -worker_affinities=0,1,2,3,4,5,6,7,8,9,20,21,22,23,24,25,26,27,28,29 -fuse_pipelines=false -preload_buffer_pool=false -storage_path=/fastdisk/qs-data/tpch-sf50-colstore-128kb
+Dropped\n
+Query 01.sql
+(4 rows)
+(4 rows)
+(4 rows)
+(4 rows)
+(4 rows)
+(4 rows)
+(4 rows)
+(4 rows)
+(4 rows)
+(4 rows)
+(4 rows)
+Starting Quickstep with 20 worker thread(s) and a 125.75 GB buffer pool.
+Time: 85158.200 ms
+Time: 2618.184 ms
+Time: 2713.642 ms
+Time: 2699.955 ms
+Time: 2759.784 ms
+Time: 2717.684 ms
+Time: 2726.212 ms
+Time: 2716.540 ms
+Time: 2602.833 ms
+Time: 2683.685 ms
+Time: 2692.673 ms
+Dropped\n
+Query 02.sql
+(100 rows)
+(100 rows)
+(100 rows)
+(100 rows)
+(100 rows)
+(100 rows)
+(100 rows)
+(100 rows)
+(100 rows)
+(100 rows)
+(100 rows)
+Starting Quickstep with 20 worker thread(s) and a 125.75 GB buffer pool.
+Time: 15053.842 ms
+Time: 767.546 ms
+Time: 675.948 ms
+Time: 700.048 ms
+Time: 664.008 ms
+Time: 690.511 ms
+Time: 685.310 ms
+Time: 694.992 ms
+Time: 698.997 ms
+Time: 692.366 ms
+Time: 688.850 ms
+Dropped\n
+Query 03.sql
+(10 rows)
+(10 rows)
+(10 rows)
+(10 rows)
+(10 rows)
+(10 rows)
+(10 rows)
+(10 rows)
+(10 rows)
+(10 rows)
+(10 rows)
+Starting Quickstep with 20 worker thread(s) and a 125.75 GB buffer pool.
+Time: 50073.991 ms
+Time: 3220.657 ms
+Time: 3075.696 ms
+Time: 3054.093 ms
+Time: 3114.652 ms
+Time: 3136.769 ms
+Time: 3110.706 ms
+Time: 3098.278 ms
+Time: 3118.209 ms
+Time: 3157.410 ms
+Time: 3066.946 ms
+Dropped\n
+Query 04.sql
+(5 rows)
+(5 rows)
+(5 rows)
+(5 rows)
+(5 rows)
+(5 rows)
+(5 rows)
+(5 rows)
+(5 rows)
+(5 rows)
+(5 rows)
+Starting Quickstep with 20 worker thread(s) and a 125.75 GB buffer pool.
+Time: 40127.506 ms
+Time: 4303.628 ms
+Time: 3790.631 ms
+Time: 3766.887 ms
+Time: 3809.011 ms
+Time: 4222.913 ms
+Time: 4160.885 ms
+Time: 3996.155 ms
+Time: 4208.505 ms
+Time: 4071.434 ms
+Time: 4122.507 ms
+Dropped\n
+Query 05.sql
+(5 rows)
+(5 rows)
+(5 rows)
+(5 rows)
+(5 rows)
+(5 rows)
+(5 rows)
+(5 rows)
+(5 rows)
+(5 rows)
+(5 rows)
+Starting Quickstep with 20 worker thread(s) and a 125.75 GB buffer pool.
+Time: 34739.445 ms
+Time: 14937.284 ms
+Time: 12947.095 ms
+Time: 14682.709 ms
+Time: 13216.433 ms
+Time: 15118.924 ms
+Time: 12994.790 ms
+Time: 15258.148 ms
+Time: 12665.803 ms
+Time: 15247.170 ms
+Time: 12869.091 ms
+Dropped\n
+Query 06.sql
+(1 row)
+(1 row)
+(1 row)
+(1 row)
+(1 row)
+(1 row)
+(1 row)
+(1 row)
+(1 row)
+(1 row)
+(1 row)
+Starting Quickstep with 20 worker thread(s) and a 125.75 GB buffer pool.
+Time: 16212.558 ms
+Time: 1480.164 ms
+Time: 1449.305 ms
+Time: 1431.686 ms
+Time: 1471.907 ms
+Time: 1451.341 ms
+Time: 1260.245 ms
+Time: 1423.516 ms
+Time: 1413.039 ms
+Time: 1400.289 ms
+Time: 1429.232 ms
+Dropped\n
+Query 07.sql
+(4 rows)
+(4 rows)
+(4 rows)
+(4 rows)
+(4 rows)
+(4 rows)
+(4 rows)
+(4 rows)
+(4 rows)
+(4 rows)
+(4 rows)
+Starting Quickstep with 20 worker thread(s) and a 125.75 GB buffer pool.
+Time: 41264.221 ms
+Time: 9681.591 ms
+Time: 8886.538 ms
+Time: 9212.644 ms
+Time: 8472.068 ms
+Time: 8611.405 ms
+Time: 8522.613 ms
+Time: 8493.481 ms
+Time: 8461.307 ms
+Time: 8390.854 ms
+Time: 8791.174 ms
+Dropped\n
+Query 08.sql
+(2 rows)
+(2 rows)
+(2 rows)
+(2 rows)
+(2 rows)
+(2 rows)
+(2 rows)
+(2 rows)
+(2 rows)
+(2 rows)
+(2 rows)
+Starting Quickstep with 20 worker thread(s) and a 125.75 GB buffer pool.
+Time: 25022.429 ms
+Time: 2700.724 ms
+Time: 2662.618 ms
+Time: 2637.743 ms
+Time: 2532.906 ms
+Time: 2911.297 ms
+Time: 2705.313 ms
+Time: 2689.908 ms
+Time: 2772.465 ms
+Time: 2989.770 ms
+Time: 2742.016 ms
+Dropped\n
+Query 09.sql
+(175 rows)
+(175 rows)
+(175 rows)
+(175 rows)
+(175 rows)
+(175 rows)
+(175 rows)
+(175 rows)
+(175 rows)
+(175 rows)
+(175 rows)
+Starting Quickstep with 20 worker thread(s) and a 125.75 GB buffer pool.
+Time: 51313.636 ms
+Time: 19879.853 ms
+Time: 20958.498 ms
+Time: 19721.626 ms
+Time: 20988.085 ms
+Time: 19421.071 ms
+Time: 20935.820 ms
+Time: 19893.472 ms
+Time: 20796.807 ms
+Time: 19303.869 ms
+Time: 21097.191 ms
+Dropped\n
+Query 10.sql
+(20 rows)
+(20 rows)
+(20 rows)
+(20 rows)
+(20 rows)
+(20 rows)
+(20 rows)
+(20 rows)
+(20 rows)
+(20 rows)
+(20 rows)
+Starting Quickstep with 20 worker thread(s) and a 125.75 GB buffer pool.
+Time: 40327.020 ms
+Time: 8076.498 ms
+Time: 7759.418 ms
+Time: 7418.399 ms
+Time: 7690.635 ms
+Time: 7420.777 ms
+Time: 7657.091 ms
+Time: 7411.624 ms
+Time: 7581.981 ms
+Time: 7595.889 ms
+Time: 7950.985 ms
+Dropped\n
+Query 11.sql
+(381550 rows)
+(381550 rows)
+(381550 rows)
+(381550 rows)
+(381550 rows)
+(381550 rows)
+(381550 rows)
+(381550 rows)
+(381550 rows)
+(381550 rows)
+(381550 rows)
+Starting Quickstep with 20 worker thread(s) and a 125.75 GB buffer pool.
+Time: 3108.310 ms
+Time: 988.461 ms
+Time: 875.944 ms
+Time: 880.940 ms
+Time: 862.897 ms
+Time: 864.116 ms
+Time: 936.526 ms
+Time: 948.221 ms
+Time: 938.495 ms
+Time: 1068.451 ms
+Time: 927.603 ms
+Dropped\n
+Query 12.sql
+(2 rows)
+(2 rows)
+(2 rows)
+(2 rows)
+(2 rows)
+(2 rows)
+(2 rows)
+(2 rows)
+(2 rows)
+(2 rows)
+(2 rows)
+Starting Quickstep with 20 worker thread(s) and a 125.75 GB buffer pool.
+Time: 34897.933 ms
+Time: 5035.943 ms
+Time: 4953.646 ms
+Time: 4849.830 ms
+Time: 4324.941 ms
+Time: 4176.769 ms
+Time: 4120.055 ms
+Time: 4381.161 ms
+Time: 4061.454 ms
+Time: 4426.081 ms
+Time: 3965.905 ms
+Dropped\n
+Query 13.sql
+(46 rows)
+(46 rows)
+(46 rows)
+(46 rows)
+(46 rows)
+(46 rows)
+(46 rows)
+(46 rows)
+(46 rows)
+(46 rows)
+(46 rows)
+Starting Quickstep with 20 worker thread(s) and a 125.75 GB buffer pool.
+Time: 6443.235 ms
+Time: 3161.481 ms
+Time: 3019.387 ms
+Time: 3023.837 ms
+Time: 3022.788 ms
+Time: 3026.089 ms
+Time: 3013.445 ms
+Time: 3027.001 ms
+Time: 3025.452 ms
+Time: 3024.572 ms
+Time: 3008.027 ms
+Dropped\n
+Query 14.sql
+(1 row)
+(1 row)
+(1 row)
+(1 row)
+(1 row)
+(1 row)
+(1 row)
+(1 row)
+(1 row)
+(1 row)
+(1 row)
+Starting Quickstep with 20 worker thread(s) and a 125.75 GB buffer pool.
+Time: 32829.102 ms
+Time: 5104.488 ms
+Time: 6258.198 ms
+Time: 4951.746 ms
+Time: 6252.897 ms
+Time: 4915.689 ms
+Time: 6188.183 ms
+Time: 4971.287 ms
+Time: 6212.397 ms
+Time: 4941.938 ms
+Time: 6163.441 ms
+Dropped\n
+Query 15.sql
+(1 row)
+(1 row)
+(1 row)
+(1 row)
+(1 row)
+(1 row)
+(1 row)
+(1 row)
+(1 row)
+(1 row)
+(1 row)
+Starting Quickstep with 20 worker thread(s) and a 125.75 GB buffer pool.
+Time: 16943.017 ms
+Time: 1461.619 ms
+Time: 1368.858 ms
+Time: 1252.083 ms
+Time: 1274.425 ms
+Time: 1305.578 ms
+Time: 1229.843 ms
+Time: 1364.362 ms
+Time: 1225.334 ms
+Time: 1290.900 ms
+Time: 1283.222 ms
+Dropped\n
+Query 16.sql
+(27840 rows)
+(27840 rows)
+(27840 rows)
+(27840 rows)
+(27840 rows)
+(27840 rows)
+(27840 rows)
+(27840 rows)
+(27840 rows)
+(27840 rows)
+(27840 rows)
+Starting Quickstep with 20 worker thread(s) and a 125.75 GB buffer pool.
+Time: 5348.392 ms
+Time: 2253.756 ms
+Time: 2153.545 ms
+Time: 2188.144 ms
+Time: 2218.406 ms
+Time: 2176.649 ms
+Time: 2128.160 ms
+Time: 2120.380 ms
+Time: 2260.372 ms
+Time: 2143.134 ms
+Time: 2196.027 ms
+Dropped\n
+Query 17.sql
+(1 row)
+(1 row)
+(1 row)
+(1 row)
+(1 row)
+(1 row)
+(1 row)
+(1 row)
+(1 row)
+(1 row)
+(1 row)
+Starting Quickstep with 20 worker thread(s) and a 125.75 GB buffer pool.
+Time: 18003.487 ms
+Time: 2945.338 ms
+Time: 2761.228 ms
+Time: 2833.667 ms
+Time: 2922.946 ms
+Time: 2886.838 ms
+Time: 2827.877 ms
+Time: 3000.535 ms
+Time: 2920.320 ms
+Time: 2837.926 ms
+Time: 2925.516 ms
+Dropped\n
+Query 18.sql
+(100 rows)
+(100 rows)
+(100 rows)
+(100 rows)
+(100 rows)
+(100 rows)
+(100 rows)
+(100 rows)
+(100 rows)
+(100 rows)
+(100 rows)
+Starting Quickstep with 20 worker thread(s) and a 125.75 GB buffer pool.
+Time: 24723.133 ms
+Time: 4826.549 ms
+Time: 5103.029 ms
+Time: 5199.798 ms
+Time: 4861.203 ms
+Time: 4888.744 ms
+Time: 5208.848 ms
+Time: 5235.236 ms
+Time: 5037.466 ms
+Time: 4905.084 ms
+Time: 4914.481 ms
+Dropped\n
+Query 19.sql
+(1 row)
+(1 row)
+(1 row)
+(1 row)
+(1 row)
+(1 row)
+(1 row)
+(1 row)
+(1 row)
+(1 row)
+(1 row)
+Starting Quickstep with 20 worker thread(s) and a 125.75 GB buffer pool.
+Time: 27880.304 ms
+Time: 2078.679 ms
+Time: 1666.709 ms
+Time: 1753.435 ms
+Time: 1620.038 ms
+Time: 1824.327 ms
+Time: 1919.810 ms
+Time: 1776.607 ms
+Time: 1818.104 ms
+Time: 1616.994 ms
+Time: 1758.750 ms
+Dropped\n
+Query 20.sql
+(8890 rows)
+(8890 rows)
+(8890 rows)
+(8890 rows)
+(8890 rows)
+(8890 rows)
+(8890 rows)
+(8890 rows)
+(8890 rows)
+(8890 rows)
+(8890 rows)
+Starting Quickstep with 20 worker thread(s) and a 125.75 GB buffer pool.
+Time: 19649.672 ms
+Time: 2413.391 ms
+Time: 2207.042 ms
+Time: 2218.687 ms
+Time: 2238.263 ms
+Time: 2281.673 ms
+Time: 2190.709 ms
+Time: 2159.266 ms
+Time: 2232.468 ms
+Time: 2238.129 ms
+Time: 2231.979 ms
+Dropped\n
+Query 21.sql
+(100 rows)
+(100 rows)
+(100 rows)
+(100 rows)
+(100 rows)
+(100 rows)
+(100 rows)
+(100 rows)
+(100 rows)
+(100 rows)
+(100 rows)
+Starting Quickstep with 20 worker thread(s) and a 125.75 GB buffer pool.
+Time: 34059.839 ms
+Time: 16679.571 ms
+Time: 15858.559 ms
+Time: 15854.604 ms
+Time: 15766.789 ms
+Time: 16045.505 ms
+Time: 16038.403 ms
+Time: 16159.138 ms
+Time: 15950.661 ms
+Time: 15824.783 ms
+Time: 16026.974 ms
+Dropped\n
+Query 22.sql
+(7 rows)
+(7 rows)
+(7 rows)
+(7 rows)
+(7 rows)
+(7 rows)
+(7 rows)
+(7 rows)
+(7 rows)
+(7 rows)
+(7 rows)
+Starting Quickstep with 20 worker thread(s) and a 125.75 GB buffer pool.
+Time: 8906.582 ms
+Time: 5794.352 ms
+Time: 5668.711 ms
+Time: 5664.133 ms
+Time: 5659.569 ms
+Time: 5654.646 ms
+Time: 5670.624 ms
+Time: 5664.820 ms
+Time: 5662.265 ms
+Time: 5669.997 ms
+Time: 5640.726 ms
