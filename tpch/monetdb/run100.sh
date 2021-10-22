@@ -9,7 +9,7 @@ for query in ${queries[@]} ; do
   # run each query 5 times.
   for i in `seq 1 5`;
   do
-    if ! mclient -d tpch100  --interactive=ms < tmp.sql | grep tuple;
+    if ! mclient -d tpch100 -t clock --interactive < tmp.sql | grep "tuple\|clk:";
     then
        echo "MonetDB failed on query $query, skipping to next query."
        break
