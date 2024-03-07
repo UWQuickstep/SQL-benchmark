@@ -4,7 +4,7 @@
 import sys
 import re
 
-patt = re.compile(ur'Query (\d+)\.sql|Time: (\d+\.\d+) ms')
+patt = re.compile(r'Query (\d+)\.sql|Time: (\d+\.\d+) ms')
 
 def avg(arr):
   sum = 0.0
@@ -19,7 +19,7 @@ def process_file(fname):
     contents = f.read()
     f.close()
   except Exception as e:
-    print "Failed to open file: " + e
+    print ("Failed to open file: " + str(e))
     return -1
 
   current_query = 0
@@ -36,8 +36,7 @@ def process_file(fname):
   query_avg[current_query] = round(avg(counts[1:-1]), 2)
 
   for k in query_avg:
-    #print "{},{}".format(k, query_avg[k])
-    print "{}".format(query_avg[k])
+    print(f"{query_avg[k]}")
 
 def main(args):
   for fname in args[1:]:
